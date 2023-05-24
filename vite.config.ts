@@ -20,7 +20,10 @@ export default defineConfig((mode) => {
       }
     }
   } else if (mode.mode === 'produciton'){
-    
+    server = {
+      port: envMap.VITE_PORT,
+      host: envMap.VITE_HOST
+    }
   }
   return {
     plugins: [vue()],
