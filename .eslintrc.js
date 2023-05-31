@@ -37,5 +37,13 @@ module.exports = {
       '@typescript-eslint/no-unused-vars': 0, // 允许出现未使用过的变量
       '@typescript-eslint/no-inferrable-types': 0, //  允许变量后面添加类型
       '@typescript-eslint/no-non-null-assertion': 0,
+      '@typescript-eslint/ban-types': [
+        'error', {
+          extendDefaults: true,
+          types: {
+            '{}' :false
+          }
+        }
+      ]
     },
   }

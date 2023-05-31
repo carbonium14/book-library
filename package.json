@@ -4,16 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview --open",
+    "dev": "vite --mode development --open",
+    "build": "vue-tsc && vite build --mode production",
+    "preview": "vite preview --open --port 8888",
     "eslint": "eslint --init",
     "lint": "eslint --ext .ts --ext .vue --ext js src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "axios": "^1.4.0",
     "dotenv": "^16.0.3",
+    "element-plus": "^2.3.5",
     "good-storage": "^1.1.1",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@types/good-storage": "^1.1.0",
@@ -23,6 +32,7 @@
     "@vitejs/plugin-vue": "^4.1.0",
     "eslint": "^7.2.0",
     "eslint-plugin-vue": "^7.20.0",
+    "sass": "^1.62.1",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
     "vue-eslint-parser": "^9.3.0",

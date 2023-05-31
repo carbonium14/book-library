@@ -15,10 +15,10 @@ export class ImgUtil {
     return ImgUtil.imgList[imgName]
   }
   static loadAllImg() {
-    const imgMap: Record<string, any> = import.meta.globEager('../assets/img/**/*.png')
+    const imgMap: Record<string, any> = import.meta.glob('../assets/img/**/*.png', { eager: true })
     let absolutePath: string = ''
     let imgName: string = ''
-    for (let relativePath in imgMap) {
+    for (const relativePath in imgMap) {
       absolutePath = imgMap[relativePath].default
       if (absolutePath) {
         imgName = absolutePath.substring(absolutePath.lastIndexOf('/') + 1)
