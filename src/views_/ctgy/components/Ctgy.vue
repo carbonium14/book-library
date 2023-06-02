@@ -8,14 +8,12 @@
     </ul>
     <div class="secondthrdctgy">
       <ul>
-        <li class="secondthrdctgy-item" v-for="item in secondCtgyList" :key="item.secondCtgyId">
+        <li class="secondthrdctgy-item" v-for="(item, index) in secondCtgyList" :key="item.secondCtgyId">
           <div class="secondctgy-item">
             <span class="secondCtgyName">{{ item.secondCtgyName }}</span>
             <span class="secondCtgyNameshop">{{ item.secondCtgyName }}馆&nbsp;&gt;</span>
           </div>
-          <ThrdCtgy :thrdCtgys="item.thirdCtgys" :isReadyOpen="item.isReadyOpen" :secondCtgy="item"
-            :subThirdCtgys="item.subThirdCtgys">
-          </ThrdCtgy>
+          <ThrdCtgy :thrdCtgys="item.thirdCtgys" :isReadyOpen="item.isReadyOpen" :secondCtgy="item" :subThirdCtgys="item.subThirdCtgys"></ThrdCtgy>
         </li>
       </ul>
     </div>
@@ -25,8 +23,7 @@
 <script setup lang="ts">
 import FstToThrdCtgy from '../service/index'
 import ThrdCtgy from './ThrdCtgy.vue'
-const { firstCtgyList, secondCtgyList } = FstToThrdCtgy.storeRefs
-const { firstCtgyActiveIndex, changeTab, getFirstCtgys, getSecThrdCtgyList } = FstToThrdCtgy
+const { firstCtgyActiveIndex, firstCtgyList, changeTab, getFirstCtgys, secondCtgyList, getSecThrdCtgyList } = FstToThrdCtgy
 getFirstCtgys()
 getSecThrdCtgyList()
 </script>

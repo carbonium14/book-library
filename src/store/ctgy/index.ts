@@ -1,10 +1,14 @@
-import goodStorage from 'good-storage'
-import { Module } from 'vuex'
-import { CtgyState, FirstCtgy, SecondCtgy, initCtgyState } from './state'
+import { CtgyState, FirstCtgy, SecondCtgy } from './state'
 import ctgyApi from '../../api/CtgyApi'
-export const ctgyModule: Module<CtgyState, {}> = {
-  namespaced: true,
-  state: initCtgyState,
+import { AxiosResponse } from 'axios'
+import { defineStore } from 'pinia'
+export const ctgyStore = defineStore('ctgyStore', {
+  state: (): CtgyState => {
+    return {
+      firstCtgyList: [],
+      secondCtgyList: []
+    }
+  },
   getters: {
     getFirstCtgyList(state) {
       return state.firstCtgyList
@@ -13,23 +17,19 @@ export const ctgyModule: Module<CtgyState, {}> = {
       return state.secondCtgyList
     }
   },
-  mutations: {
-    storeFirstCtgyList(state, firstCtgyList: FirstCtgy[]) {
-      state.firstCtgyList = firstCtgyList
-    },
-    storeSecondCtgyList(state, secondCtgyList: SecondCtgy[]) {
-      goodStorage.set('secondCtgyList', secondCtgyList)
-      state.secondCtgyList = secondCtgyList
-    }
-  },
   actions: {
-    async findFirstCtgyList({ commit }) {
-      const result = await ctgyApi.getFirstCtgyList()
-      commit('storeFirstCtgyList', result.data)
+    async findFirstCtgyList() {
+      const result: AxiosResponse<FirstCtgy[]> = await ctgyApi.getFirstCtgyList()
+      this.firstCtgyList = result.data
     },
-    async findSecThrdCtgyList({ commit }, firstCtgyId: number) {
-      const result = await ctgyApi.getSecThrdCtgyList(firstCtgyId)
-      commit('storeSecondCtgyList', result.data)
+    async findSecThrdCtgyList(firstCtgyId: number) {
+      const result: AxiosResponse<SecondCtgy[]> = await ctgyApi.getSecThrdCtgyList(firstCtgyId)
+      result.data = result.data.map((secondctgy) => {
+        secondctgy.isReadyOpen = true
+        secondctgy.subThirdCtgys = secondctgy.thirdCtgys.slice(0, 5)
+        return secondctgy
+      })
+      this.secondCtgyList = result.data
     }
   }
-}
+})

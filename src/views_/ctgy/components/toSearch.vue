@@ -9,7 +9,7 @@
     </div>
     <div class="message">
       <div  class="icon-xiaoxi">
-        <font-awesome-icon icon="fa-regular fa-envelope"/>
+        <font-awesome-icon icon="fa-solid fa-envelope"/>
         <div class="icon-xiaoxi-count">9</div>
       </div>
     </div>

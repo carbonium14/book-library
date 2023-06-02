@@ -1,13 +1,13 @@
-import { ctgyStore } from './../../../store/ctgy/index'
+import { CtgyActions } from '../../../store/actions'
+import { ctgyGettersProxy } from '../../../store/getters'
 import { Ref, ref, watchEffect } from 'vue'
-import { SecondCtgy } from '../../../store/ctgy/state'
-import { storeToRefs } from 'pinia'
+import { FirstCtgy, SecondCtgy } from '../../../store/ctgy/state'
 export default class FstToThrdCtgy {
-  static store = ctgyStore()
-  static storeRefs = storeToRefs(FstToThrdCtgy.store)
   static firstCtgyActiveIndex: Ref<number> = ref(0)
+  static firstCtgyList: Ref<FirstCtgy[]> = ref([])
   static async getFirstCtgys() {
-    await FstToThrdCtgy.store.findFirstCtgyList()
+    await CtgyActions.findFirstCtgyList()
+    FstToThrdCtgy.firstCtgyList.value = ctgyGettersProxy.getFirstCtgyList 
   }
   static openOrCollapse(event: Event, secondCtgy: SecondCtgy) {
     const currentTarget = <HTMLBodyElement>event.currentTarget
@@ -25,9 +25,11 @@ export default class FstToThrdCtgy {
   static changeTab(index: number) {
     FstToThrdCtgy.firstCtgyActiveIndex.value = index
   }
+  static secondCtgyList: Ref<SecondCtgy[]> = ref([])
   static getSecThrdCtgyList() {
     watchEffect(async () => {
-      await FstToThrdCtgy.store.findSecThrdCtgyList(FstToThrdCtgy.firstCtgyActiveIndex.value + 1)
+      await CtgyActions.findSecThrdCtgyList(FstToThrdCtgy.firstCtgyActiveIndex.value + 1)
+      FstToThrdCtgy.secondCtgyList.value = ctgyGettersProxy.getSecondCtgyList
     })
   }
 }

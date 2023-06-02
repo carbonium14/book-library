@@ -7,18 +7,18 @@
     <div :class="{ readyOpen: isReadyOpen, readycollapse: !isReadyOpen }" @click="(event) => openOrCollapse(event, secondCtgy)">
       <span v-show="isReadyOpen">
         展开
-        <font-awesome-icon icon="fa-regular fa-circle-down" />
+        <font-awesome-icon icon="fa-solid fa-circle-down" />
       </span>
       <span v-show="!isReadyOpen">
         收起
-        <font-awesome-icon icon="fa-regular fa-circle-up" />
+        <font-awesome-icon icon="fa-solid fa-circle-up" />
       </span>
     </div>
   </ul>
 </template>
 
 <script setup lang="ts">
-import { SecondCtgy, ThirdCtgy } from '../../../store/state'
+import { FirstCtgy, SecondCtgy, ThirdCtgy } from '../../../store/state'
 import FstToThrdCtgy from '../service/index'
 const { thrdCtgys, isReadyOpen, secondCtgy, subThirdCtgys } = defineProps<{
   thrdCtgys: ThirdCtgy[],
