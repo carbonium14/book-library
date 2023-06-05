@@ -1,7 +1,7 @@
 <template>
   <ul class="thrdctgy">
     <li class="thrdctgy-item" v-for="(item, index) in (isReadyOpen ? subThirdCtgys : thrdCtgys)" :key="item.thirdCtgyId">
-      <span class="thrdctgyname">{{ item.thirdName }}</span>
+      <span class="thrdctgyname" @click="toBookInfo(item, secondCtgy)">{{ item.thirdName }}</span>
       <i v-if="((index + 1) % 3) !== 0" class="icon-shuxian">|</i>
     </li>
     <div :class="{ readyOpen: isReadyOpen, readycollapse: !isReadyOpen }" @click="(event) => openOrCollapse(event, secondCtgy)">
@@ -26,7 +26,8 @@ const { thrdCtgys, isReadyOpen, secondCtgy, subThirdCtgys } = defineProps<{
   secondCtgy: SecondCtgy,
   subThirdCtgys: ThirdCtgy[]
 }>()
-const { openOrCollapse } = FstToThrdCtgy
+const { openOrCollapse, toBookInfo } = FstToThrdCtgy
+
 </script>
 
 <style lang="scss" scoped>

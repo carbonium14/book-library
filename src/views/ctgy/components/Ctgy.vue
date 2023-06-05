@@ -18,6 +18,7 @@
           </ThrdCtgy>
         </li>
       </ul>
+      <div class="empty" v-show="secondCtgyList.length === 0">当前一级分类暂时没有二级分类</div>
     </div>
   </div>
 </template>
@@ -40,6 +41,7 @@ getSecThrdCtgyList()
   bottom: 0.85rem;
   width: 100%;
   gap: 0.1rem;
+  font-size: 0.2rem;
   .firstctgy {
     width: 1.3rem;
     flex-basis: 1.3rem;
@@ -84,6 +86,13 @@ getSecThrdCtgyList()
           color: #535353;
         }
       }
+    }
+    .empty {
+      background-color: #fff;
+      width: 100%;
+      text-align: center;
+      color: gray;
+      padding: 98% 0;
     }
   }
 }

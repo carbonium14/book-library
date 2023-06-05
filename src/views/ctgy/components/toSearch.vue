@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="message">
-      <div  class="icon-xiaoxi">
+      <div class="icon-xiaoxi">
         <font-awesome-icon icon="fa-regular fa-envelope"/>
         <div class="icon-xiaoxi-count">9</div>
       </div>
@@ -21,22 +21,11 @@
 </script>
 
 <style lang="scss" scoped>
+@import '../../../assets/css/common.scss';
 .content {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  padding: 0.195rem;
-  width: 5.4rem;
-  height: 0.63rem;
-  align-items: center;
-  background-color: #fff;
+  @extend .multiplex-context;
   .tosearch {
-    display: flex;
-    align-items: center;
-    width: 4.3rem;
-    height: 0.6rem;
-    border-radius: 1rem;
-    background-color: #f6f6f6;
+    @extend .multiplex-tosearch;
     .icon-fangdajing {
       font-size: 0.36rem;
       margin: 0.16rem 0.15rem;
