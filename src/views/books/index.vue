@@ -6,6 +6,7 @@
   <div class="bookctgys">
     <breadcrumbs></breadcrumbs>
     <thrdctgys></thrdctgys>
+    <booksort></booksort>
     <bookItem></bookItem>
   </div>
 </template>
@@ -16,6 +17,7 @@ import getImg from '../../utils/imgUtil'
 import breadcrumbs from './components/breadcrumbs.vue'
 import thrdctgys from './components/thrdctgys.vue'
 import bookItem from './components/bookitem.vue'
+import booksort from './components/booksort.vue'
 </script>
 
 <style lang="scss" scoped>

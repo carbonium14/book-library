@@ -5,7 +5,7 @@
         全部
       </span>
     </div>
-    <div class="thrdctgys" v-for="(item, index) in isReadyOpen ? getSubThirdCtgyList : getThirdCtgyList" :key="item.thirdCtgyId">
+    <div class="thrdctgys" v-for="(item, index) in ThirdCtgyList" :key="item.thirdCtgyId">
       <span :class="{ 'thrdctgys-item': true, 'is-active': item.thirdCtgyId === getSwitchThrdCtgyIndex }" @click="changeThrdCtgyIndex(item.thirdCtgyId)">
         {{ item.thirdName }}
       </span>
@@ -24,8 +24,9 @@
 <script setup lang="ts">
 import FstToThrdCtgy from '../../ctgy/service/index'
 const { getSubThirdCtgyList, getThirdCtgyList, isReadyOpen } = FstToThrdCtgy.storeRefs
-const { openOrCollapseInBook, storeRefs, changeThrdCtgyIndex } = FstToThrdCtgy
+const { openOrCollapseInBook, storeRefs, changeThrdCtgyIndex, changeTabWithClick } = FstToThrdCtgy
 const { getSwitchThrdCtgyIndex } = storeRefs
+const ThirdCtgyList = changeTabWithClick()
 </script>
 
 <style lang="scss" scoped>

@@ -21,10 +21,10 @@ export const ctgyStore = defineStore('ctgyStore', {
     }
   },
   getters: {
-    getFirstCtgyList(state) {
+    getFirstCtgyList(state): FirstCtgy[] {
       return state.firstCtgyList
     },
-    getSecThrdCtgyList(state) {
+    getSecThrdCtgyList(state): SecondCtgy[] {
       return state.secondCtgyList
     },
     getSubThirdCtgyList(state): ThirdCtgy[] {

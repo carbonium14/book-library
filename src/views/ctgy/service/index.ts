@@ -1,5 +1,6 @@
+import goodStorage from 'good-storage'
 import { ctgyStore } from '../../../store/ctgy/index'
-import { Ref, ref, watchEffect } from 'vue'
+import { Ref, ref, watchEffect, computed } from 'vue'
 import { SecondCtgy, ThirdCtgy } from '../../../store/ctgy/state'
 import { storeToRefs } from 'pinia'
 import router from '../../../router/index'
@@ -59,12 +60,25 @@ export default class FstToThrdCtgy {
   }
   static changeThrdCtgyIndex(thrdCtgyActiveIndex: number) {
     FstToThrdCtgy.store.storeSwitchThrdCtgyIndex(thrdCtgyActiveIndex)
+    const sortField = goodStorage.get('sortField') || 'ISBN'
+    const ascOrDesc = goodStorage.get('ascOrDesc') || 'asc'
     if (thrdCtgyActiveIndex === -1) {
-      Books.store.findBooksBySecondCtgyId(FstToThrdCtgy.store.getSecondCtgy.secondCtgyId)
+      Books.store.findBooksBySecondCtgyId(FstToThrdCtgy.store.getSecondCtgy.secondCtgyId, sortField, ascOrDesc)
     } else {
       const thirdCtgy = FstToThrdCtgy.store.getThirdCtgyList.find((thirdCtgy) => thirdCtgy.thirdCtgyId === thrdCtgyActiveIndex)!
       FstToThrdCtgy.store.storeThirdCtgy(thirdCtgy)
-      Books.store.findBooksByThirdCtgyId(thrdCtgyActiveIndex)
+      Books.store.findBooksByThirdCtgyId(thrdCtgyActiveIndex, sortField, ascOrDesc)
     }
+  }
+  static changeTabWithClick() {
+    return computed(() => {
+      const newThirdCtgyList = FstToThrdCtgy.store.isReadyOpen ? FstToThrdCtgy.store.getSubThirdCtgyList : FstToThrdCtgy.store.getThirdCtgyList
+      if (FstToThrdCtgy.store.getSwitchThrdCtgyIndex === -1) {
+        return newThirdCtgyList
+      }
+      const currentIndex = newThirdCtgyList.findIndex((ctgy) => ctgy.thirdCtgyId === FstToThrdCtgy.store.getSwitchThrdCtgyIndex)!
+      const currentCtgy = newThirdCtgyList[currentIndex]
+      return [currentCtgy, ...newThirdCtgyList.slice(0, currentIndex), ...newThirdCtgyList.slice(currentIndex + 1)]
+    })
   }
 }

@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios'
 export default defineStore('bookstore', {
   state:() => {
     return {
-      bookList: [] as BookInfo[]
+      bookList: [] as BookInfo[],
     }
   },
   getters: {
@@ -15,15 +15,29 @@ export default defineStore('bookstore', {
     }
   },
   actions: {
-    async findBooksByThirdCtgyId(thirdCtgyid: number) {
-      const bookList: AxiosResponse<BookInfo[]> = await bookApi.getBookList(thirdCtgyid)
+    async findBooksByThirdCtgyId(thirdCtgyid: number, sortField: string, ascOrDesc: string) {
+      const bookList: AxiosResponse<BookInfo[]> = await bookApi.getBookList(thirdCtgyid, sortField, ascOrDesc)
+      bookList.data = bookList.data.map((book) => {
+        book.discountprice = toFixed_(book.originalprice * book.discount)
+        return book
+      })
       this.bookList = bookList.data
       goodStorage.set('bookList', this.bookList)
     },
-    async findBooksBySecondCtgyId(secondCtgyid: number) {
-      const bookList: AxiosResponse<BookInfo[]> = await bookApi.getAllBookList(secondCtgyid)
+    async findBooksBySecondCtgyId(secondCtgyid: number, sortField: string, ascOrDesc: string) {
+      const bookList: AxiosResponse<BookInfo[]> = await bookApi.getAllBookList(secondCtgyid, sortField, ascOrDesc)
+      bookList.data = bookList.data.map((book) => {
+        book.discountprice = toFixed_(book.originalprice * book.discount)
+        return book
+      })
       this.bookList = bookList.data
       goodStorage.set('bookList', this.bookList)
     }
   }
 })
+const toFixed_ = (num: number): number => {
+  if (num.toString().indexOf('.') !== -1) {
+    return parseFloat(num.toFixed(2))
+  }
+  return num
+}

@@ -13,7 +13,7 @@
       <div class="bookinfo-other">
         <div class="price">
           <span class="discountprice spacing">
-            <span class="symbol">&yen;</span>{{ (item.originalprice * item.discount).toFixed(2) }}
+            <span class="symbol">&yen;</span>{{ item.discountprice }}
           </span>
           <span class="originprice spacing">&yen;{{ item.originalprice }}</span>
           <span class="discount">{{ item.discount }}折</span>
@@ -27,7 +27,7 @@
           <span>月销{{ item.monthsalecount }}</span>
         </div>
         <div class="ranklist">
-          <span>图书畅销总排行榜第1名</span>
+          <span>图书畅销总排行榜第{{ index + 1 }}名</span>
         </div>
       </div>
     </div>
