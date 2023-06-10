@@ -1,0 +1,56 @@
+import goodStorage from 'good-storage'
+type EleOfArr<T> = T extends Array<infer E> ? E : never
+function getValArrOfObj<T extends any[], K extends keyof EleOfArr<T>, E = EleOfArr<T>>(t: T, k: K) {
+  return t.map(({[k]: v}: E) => v)
+}
+function isPlainObject(val: unknown): val is object {
+  return Object.prototype.toString.call(val) === '[object Object]'
+}
+export enum OPTION {
+  ACCUMU = 0,
+  ADDORAPPOBJTOARR = 2,
+  NONE = -1
+}
+class Storage {
+  static storage: Storage = new Storage()
+  set(key: string, value: string): any
+  set(key: string, value: object): any
+  set(key: string, value: any[]): any
+  set(key: string, value: any[], option: OPTION): any
+  set(key: string, value: object, option: OPTION, propkey: string, propvalue: any): any
+  set(key: string, value: any, option: OPTION = OPTION.NONE, propkey: string = '', propvalue?: any) {
+    if (isPlainObject(value) && option === OPTION.ADDORAPPOBJTOARR) {
+      const arr: any[] = goodStorage.get(key, [])
+      const keyValsOfObj = getValArrOfObj(arr, key)
+      if (propkey.length > 0 && propvalue) {
+        if (!keyValsOfObj.includes(propvalue)) {
+          arr.push(value)
+        } else {
+          const index = keyValsOfObj.indexOf(propvalue)
+          if (index !== -1) {
+            arr[index] = value
+          }
+        }
+        goodStorage.set(key, arr)
+        return arr
+      }
+    } else if (Array.isArray(value) && option === OPTION.ACCUMU) {
+      const arr: any[] = goodStorage.get(key, [])
+      arr.push(...value)
+      goodStorage.set(key, arr)
+      return arr
+    }
+    goodStorage.set(key, value)
+    return value
+  }
+  get(key: string): any
+  get(key: string, option: OPTION): any
+  get(key: string, option: OPTION = OPTION.NONE) {
+    if (option === OPTION.ACCUMU || option === OPTION.ADDORAPPOBJTOARR) {
+      return goodStorage.get(key, [])
+    } else {
+      return goodStorage.get(key) || ''
+    }
+  }
+}
+export default Storage.storage

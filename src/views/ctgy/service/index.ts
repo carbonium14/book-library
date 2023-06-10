@@ -58,17 +58,18 @@ export default class FstToThrdCtgy {
   static openOrCollapseInBook(isReadyOpen: boolean) {
     FstToThrdCtgy.store.isReadyOpen = isReadyOpen
   }
-  static changeThrdCtgyIndex(thrdCtgyActiveIndex: number) {
+  static async changeThrdCtgyIndex(thrdCtgyActiveIndex: number) {
     FstToThrdCtgy.store.storeSwitchThrdCtgyIndex(thrdCtgyActiveIndex)
     const sortField = goodStorage.get('sortField') || 'ISBN'
     const ascOrDesc = goodStorage.get('ascOrDesc') || 'asc'
     if (thrdCtgyActiveIndex === -1) {
-      Books.store.findBooksBySecondCtgyId(FstToThrdCtgy.store.getSecondCtgy.secondCtgyId, sortField, ascOrDesc)
+      await Books.store.findBooksBySecondCtgyId(FstToThrdCtgy.store.getSecondCtgy.secondCtgyId, sortField, ascOrDesc)
     } else {
       const thirdCtgy = FstToThrdCtgy.store.getThirdCtgyList.find((thirdCtgy) => thirdCtgy.thirdCtgyId === thrdCtgyActiveIndex)!
       FstToThrdCtgy.store.storeThirdCtgy(thirdCtgy)
-      Books.store.findBooksByThirdCtgyId(thrdCtgyActiveIndex, sortField, ascOrDesc)
+      await Books.store.findBooksByThirdCtgyId(thrdCtgyActiveIndex, sortField, ascOrDesc)
     }
+    Books.uptBookNumWithSCLstNum()
   }
   static changeTabWithClick() {
     return computed(() => {

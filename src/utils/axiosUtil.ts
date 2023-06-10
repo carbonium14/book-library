@@ -66,10 +66,11 @@ class AxiosUtil {
     return this.axiosInstance(options)
   }
   reqPrepare() {
-    return methods.forEach((method) => {
+    methods.forEach((method) => {
       this.request[method] = (url, isMock, data) => {
         return this.sendRequest({
           url,
+          method,
           isMock,
           data
         })

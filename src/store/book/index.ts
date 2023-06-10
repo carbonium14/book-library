@@ -10,7 +10,7 @@ export default defineStore('bookstore', {
     }
   },
   getters: {
-    getBookList(state) {
+    getBookList(state): BookInfo[] {
       return state.bookList.length > 0 ? state.bookList : goodStorage.get('bookList')
     }
   },

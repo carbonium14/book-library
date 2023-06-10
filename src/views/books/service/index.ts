@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import FstToThrdCtgy from '../../ctgy/service/index'
 import bookStore from '../../../store/book/index'
 import { ctgyStore } from '../../../store/ctgy/index'
+import Shopcart from './shopcart'
 import router from '../../../router/index'
 import { ref } from 'vue'
 export default class Books {
@@ -12,9 +13,11 @@ export default class Books {
   static store = bookStore()
   static store_ = ctgyStore()
   static storeRefs = storeToRefs(Books.store)
-  static findBooksByThirdCtgyId(sortField: string = 'ISBN', ascOrDesc: string = 'asc') {
+  static async findBooksByThirdCtgyId(sortField: string = 'ISBN', ascOrDesc: string = 'asc') {
     const thirdCtgyId = FstToThrdCtgy.store.getThirdCtgy.thirdCtgyId
-    Books.store.findBooksByThirdCtgyId(thirdCtgyId, sortField, ascOrDesc)
+    await Books.store.findBooksByThirdCtgyId(thirdCtgyId, sortField, ascOrDesc)
+    await Shopcart.findCurUseShopCartLst()
+    Books.uptBookNumWithSCLstNum()
   }
   static findBooksBySecondCtgyId(sortField: string = 'ISBN', ascOrDesc: string = 'asc') {
     const secondctgyid = FstToThrdCtgy.store.getSecondCtgy.secondCtgyId
@@ -33,5 +36,20 @@ export default class Books {
     } else {
       Books.findBooksBySecondCtgyId(sortField, Books.ascOrDesc.value)
     }
+  }
+  static updateBookNum(boonNum: number, curbookisbn?: string) {
+    const bookList = Books.store.getBookList
+    for (let i = 0; i < bookList.length; i++) {
+      if (curbookisbn && curbookisbn === bookList[i].ISBN) {
+        bookList[i].purcharsenum = boonNum
+        break
+      } else {
+        bookList[i].purcharsenum = boonNum
+      }
+    }
+    return bookList
+  }
+  static uptBookNumWithSCLstNum() {
+    Shopcart.uptBookNumWithSCLstNum(Books.updateBookNum(0))
   }
 }

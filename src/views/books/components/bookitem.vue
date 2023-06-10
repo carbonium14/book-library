@@ -29,6 +29,9 @@
         <div class="ranklist">
           <span>图书畅销总排行榜第{{ index + 1 }}名</span>
         </div>
+        <div>
+          <addsubtrsc :bookitem="item"></addsubtrsc>
+        </div>
       </div>
     </div>
   </div>
@@ -39,6 +42,7 @@
 import getImg from '../../../utils/imgUtil'
 import books from '../service/index'
 import FstToThrdCtgy from '../../ctgy/service/index'
+import addsubtrsc from './addsubtrsc.vue'
 const { findBooksByThirdCtgyId, findBooksBySecondCtgyId, storeRefs } = books
 const { bookList } = storeRefs
 const { getSwitchThrdCtgyIndex } = FstToThrdCtgy.storeRefs
