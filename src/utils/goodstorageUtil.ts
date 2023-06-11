@@ -21,7 +21,7 @@ class Storage {
   set(key: string, value: any, option: OPTION = OPTION.NONE, propkey: string = '', propvalue?: any) {
     if (isPlainObject(value) && option === OPTION.ADDORAPPOBJTOARR) {
       const arr: any[] = goodStorage.get(key, [])
-      const keyValsOfObj = getValArrOfObj(arr, key)
+      const keyValsOfObj = getValArrOfObj(arr, propkey)
       if (propkey.length > 0 && propvalue) {
         if (!keyValsOfObj.includes(propvalue)) {
           arr.push(value)
@@ -50,6 +50,21 @@ class Storage {
       return goodStorage.get(key, [])
     } else {
       return goodStorage.get(key) || ''
+    }
+  }
+  remove(key: string): any
+  remove(key: string, option: OPTION, propkey: string, propvalue: any): any
+  remove(key: string, option: OPTION = OPTION.NONE, propkey: string = '', propvalue?: any) {
+    if (option === OPTION.ADDORAPPOBJTOARR) {
+      const arr: any[] = goodStorage.get(key, [])
+      const keyValsOfObj = getValArrOfObj(arr, propkey)
+      const eleIndex = keyValsOfObj.indexOf(propvalue)
+      if (eleIndex !== -1) {
+        arr.splice(eleIndex, 1)
+        goodStorage.set(key, arr)
+      }
+    } else {
+      goodStorage.remove(key)
     }
   }
 }

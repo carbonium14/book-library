@@ -3,9 +3,44 @@ import { BookInfo } from '../../../store/book/state'
 import shopCartStore from '../../../store/shopcart/index'
 import { storeToRefs } from 'pinia'
 import Books from './index'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { Ref, computed, ref } from 'vue'
+type BallType = {
+  showorhidden: boolean,
+  curTarget?: EventTarget | null
+}
 export default class Shopcart {
   static store = shopCartStore()
   static storeRefs = storeToRefs(Shopcart.store)
+  static ball: Ref<BallType> = ref({
+    showorhidden: false, 
+  })
+  static beforeDrop(ele: Element) {
+    const curBallEle = ele as HTMLBodyElement
+    const addBtnEle = <HTMLBodyElement>Shopcart.ball.value.curTarget
+    const addBtnEleRect = addBtnEle.getBoundingClientRect()
+    const x = addBtnEleRect.left - 35
+    const y = -1 * (window.innerHeight - addBtnEleRect.top - 22)
+    curBallEle.style.transform = `translate3d(0,${y}px,0)`
+    const inner = <HTMLBodyElement>curBallEle.getElementsByClassName('inner')[0]
+    inner.style.transform = `translate3d(${x}px,0,0)`
+  }
+  static dropping(ele: Element, done: (...args: any) => any) {
+    document.body.scrollHeight
+    const curBallEle = ele as HTMLBodyElement
+    curBallEle.style.transform = 'translate3d(0,0,0)'
+    const inner = <HTMLBodyElement>curBallEle.getElementsByClassName('inner')[0]
+    inner.style.transform = 'translate3d(0,0,0)'
+    done()
+  }
+  static afterDrop(ele: Element) {
+    Shopcart.ball.value.showorhidden = false
+    Shopcart.ball.value.curTarget = undefined
+  }
+  static drop(event: Event) {
+    Shopcart.ball.value.showorhidden = true
+    Shopcart.ball.value.curTarget = event.currentTarget
+  }
   static async findCurUseShopCartLst() {
     await Shopcart.store.findCurUseShopCartLst(1)
   }
@@ -26,7 +61,7 @@ export default class Shopcart {
       bookisbn: bookinfo.ISBN,
       bookname: bookinfo.bookname,
       bookpicname: bookinfo.bookpicname,
-      bookprice: bookinfo.discountprice,
+      bookprice: procDecimalZero(bookinfo.originalprice * bookinfo.discount),
       purcharsenum: 1
     }
     await Shopcart.store.addBookToShopCart(shopcart)
@@ -52,7 +87,8 @@ export default class Shopcart {
     let purcharsenum: number = 0
     if (className === 'shopcart-operate-add') {
       purcharsenum = bookinfo.purcharsenum + 1
-    } else if (className === 'shopcart-operate-minus' || className === 'shopcart-operate-del') {
+      Shopcart.drop(event)
+    } else if (className === 'shopcart-operate-minus') {
       purcharsenum = bookinfo.purcharsenum - 1
     }
     const shopcart: ShopCart = {
@@ -62,10 +98,69 @@ export default class Shopcart {
       bookisbn: bookinfo.ISBN,
       bookname: bookinfo.bookname,
       bookpicname: bookinfo.bookpicname,
-      bookprice: bookinfo.discountprice,
+      bookprice: procDecimalZero(bookinfo.originalprice * bookinfo.discount),
       purcharsenum
     }
     await Shopcart.store.appOrSubtrBookFrmShopCart(shopcart)
     Books.updateBookNum(purcharsenum, bookinfo.ISBN)
   }
+  static async delCurBookFrmSC(bookinfo: BookInfo) {
+    ElMessageBox.confirm('确定从购物车删除这本书?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '再想想',
+      type: 'warning',
+      center: true
+    }).then(async () => {
+      const curShopCartID = Shopcart.getExistsShopCartID(bookinfo)
+      await Shopcart.store.delBookFrmSC(curShopCartID)
+      Books.updateBookNum(0, bookinfo.ISBN)
+      ElMessage.success({
+        message: '删除成功'
+      })
+    }).catch(() => {
+      ElMessage.error({
+        message: '删除失败'
+      })
+    })
+  }
+  static refreshShopCartList() {
+    const totalCount = computed(() => {
+      let totalCount: number = 0
+      const shopCartList = Shopcart.store.getShopCartList
+      if (shopCartList?.length > 0) {
+        shopCartList.forEach((shopcart) => {
+          totalCount += shopcart.purcharsenum
+        })
+      }
+      return totalCount
+    })
+    const totalPrice = computed(() => {
+      let totalPrice: number = 0
+      const shopCartList = Shopcart.store.getShopCartList
+      if (shopCartList?.length > 0) {
+        shopCartList.forEach((shopcart) => {
+          totalPrice += shopcart.purcharsenum * shopcart.bookprice
+        })
+      }
+      return procDecimalZero(totalPrice)
+    })
+    return {
+      totalCount,
+      totalPrice
+    }
+  }
+}
+function procDecimalZero(num: number) {
+  let strvalue = num.toString()
+  const splitvalues = strvalue.split('.')
+  if (splitvalues.length === 1) {
+    strvalue += '.00'
+  } else if (splitvalues.length > 1) {
+    if (splitvalues[1].length === 1) {
+      strvalue += '0'
+    } else if (splitvalues[1].length > 2) {
+      strvalue = num.toFixed(2).toString()
+    }
+  }
+  return strvalue as any as number
 }

@@ -28,6 +28,14 @@ export default defineStore('shopcartstore', {
     async appOrSubtrBookFrmShopCart(shopcart: ShopCart) {
       const result: AxiosResponse<ShopCart> = await ShopCartApi.appOrSubtrBookFrmShopCart(shopcart)
       this.shopCartList = storeShopCart(result)
+    },
+    async delBookFrmSC(shopcartid: number) {
+      const result: AxiosResponse<number> = await ShopCartApi.delBookFrmSC(shopcartid)
+      if (result.data > 0) {
+        storage.remove('shopCartList', OPTION.ADDORAPPOBJTOARR, 'shopcartid', shopcartid)
+        const shopCartList: ShopCart[] = storage.get('shopCartList', OPTION.ADDORAPPOBJTOARR)
+        this.shopCartList = shopCartList
+      }
     }
   }
 })

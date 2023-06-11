@@ -11,5 +11,8 @@ class ShopcartApi {
   appOrSubtrBookFrmShopCart(shopcart: ShopCart) {
     return request.post('/shopcartmodule/appOrSubtrBookFrmShopCart', false, shopcart)
   }
+  delBookFrmSC(shopcartid: number) {
+    return request.delete(`/shopcartmodule/delBookShopCart/${shopcartid}`, false)
+  }
 }
 export default ShopcartApi.api

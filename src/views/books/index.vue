@@ -9,6 +9,9 @@
     <booksort></booksort>
     <bookItem></bookItem>
   </div>
+  <div>
+    <shopcart></shopcart>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -18,6 +21,7 @@ import breadcrumbs from './components/breadcrumbs.vue'
 import thrdctgys from './components/thrdctgys.vue'
 import bookItem from './components/bookitem.vue'
 import booksort from './components/booksort.vue'
+import shopcart from './components/shopcart.vue'
 </script>
 
 <style lang="scss" scoped>

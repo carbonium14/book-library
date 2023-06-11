@@ -37,19 +37,24 @@ export default class Books {
       Books.findBooksBySecondCtgyId(sortField, Books.ascOrDesc.value)
     }
   }
-  static updateBookNum(boonNum: number, curbookisbn?: string) {
+  static updateBookNum(bookNum: number, curbookisbn?: string) {
     const bookList = Books.store.getBookList
     for (let i = 0; i < bookList.length; i++) {
       if (curbookisbn && curbookisbn === bookList[i].ISBN) {
-        bookList[i].purcharsenum = boonNum
+        bookList[i].purcharsenum = bookNum
         break
-      } else {
-        bookList[i].purcharsenum = boonNum
       }
     }
     return bookList
   }
+  static initBookNum() {
+    const bookList = Books.store.getBookList
+    for (let i = 0; i < bookList.length; i++) {
+      bookList[i].purcharsenum = 0
+    }
+    return bookList
+  }
   static uptBookNumWithSCLstNum() {
-    Shopcart.uptBookNumWithSCLstNum(Books.updateBookNum(0))
+    Shopcart.uptBookNumWithSCLstNum(Books.initBookNum())
   }
 }

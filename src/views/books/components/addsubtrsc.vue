@@ -1,13 +1,13 @@
 <template>
   <div class="shopcart">
-    <div class="addBtn" v-if="bookitem?.purcharsenum === 0">
+    <div class="addBtn" v-show="bookitem.purcharsenum === 0">
       <div class="addBtn-inner" @click="addBookToShopCart(bookitem)">添加到购物车</div>
     </div>
-    <div class="shopcart-operate" v-else-if="bookitem?.purcharsenum >= 1">
+    <div class="shopcart-operate" v-show="bookitem.purcharsenum >= 1">
       <span class="shopcart-operate-minus" v-show="bookitem.purcharsenum > 1" @click="(e) => appOrSubtrBookFrmShopCart(bookitem, e)">
         <span class="inner">-</span>
       </span>
-      <span class="shopcart-operate-del" v-show="bookitem.purcharsenum === 1" @click="(e) => appOrSubtrBookFrmShopCart(bookitem, e)">
+      <span class="shopcart-operate-del" v-show="bookitem.purcharsenum === 1" @click="delCurBookFrmSC(bookitem)">
         <span class="inner"><font-awesome-icon icon="fa-solid fa-trash" class="shanchu"/></span>
       </span>
       <span class="purchasenum">{{ bookitem.purcharsenum }}</span>
@@ -21,10 +21,10 @@
 <script setup lang="ts">
 import { BookInfo } from '../../../store/book/state'
 import Shopcart from '../service/shopcart'
-defineProps<{
+const { bookitem } = defineProps<{
   bookitem: BookInfo
 }>()
-const { addBookToShopCart, appOrSubtrBookFrmShopCart } = Shopcart
+const { addBookToShopCart, appOrSubtrBookFrmShopCart, delCurBookFrmSC } = Shopcart
 </script>
 
 <style lang="scss" scoped>
