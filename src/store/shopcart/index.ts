@@ -16,6 +16,10 @@ export default defineStore('shopcartstore', {
     }
   },
   actions: {
+    storeShopCartList(shopCartList: ShopCart[]) {
+      this.shopCartList = shopCartList
+      storage.set('shopCartList', shopCartList)
+    },
     async findCurUseShopCartLst(userid: number) {
       const result: AxiosResponse<ShopCart[]> = await ShopCartApi.getShopCartList(userid)
       this.shopCartList = result.data
@@ -41,6 +45,7 @@ export default defineStore('shopcartstore', {
 })
 function storeShopCart(result: AxiosResponse<ShopCart>) {
   const dbShopCart: ShopCart = result.data
+  dbShopCart.checked = true
   const shopCartList: ShopCart[] = storage.set('shopCartList', dbShopCart, OPTION.ADDORAPPOBJTOARR, 'shopcartid', dbShopCart.shopcartid)
   return shopCartList
 }

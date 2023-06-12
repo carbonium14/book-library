@@ -46,7 +46,6 @@ getSecThrdCtgyList()
     width: 1.3rem;
     flex-basis: 1.3rem;
     overflow-y: auto;
-    background-color: #fff;
     &-item {
       height: 0.78rem;
       width: 100%;
@@ -70,7 +69,6 @@ getSecThrdCtgyList()
     margin-right: 0.19rem;
     overflow-y: auto;
     &-item {
-      background-color: #fff;
       .secondctgy-item {
         padding: 0 0.2rem;
         height: 0.73rem;
@@ -88,7 +86,6 @@ getSecThrdCtgyList()
       }
     }
     .empty {
-      background-color: #fff;
       width: 100%;
       text-align: center;
       color: gray;

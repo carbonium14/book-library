@@ -1,5 +1,5 @@
 <template>
-  <div class="bookitem" v-for="(item, index) in bookList" :key="item.ISBN">
+  <div class="bookitem" v-for="(item, index) in getBookList" :key="item.ISBN">
     <img class="book-pic" :src="getImg(item.bookpicname)" alt="图书" />
     <div class="bookinfo">
       <div class="bookinfo-brief">
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <div class="empty" v-show="bookList.length === 0">库存所有书已经售完</div>
+  <div class="empty" v-show="getBookList.length === 0">库存所有书已经售完</div>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +44,7 @@ import books from '../service/index'
 import FstToThrdCtgy from '../../ctgy/service/index'
 import addsubtrsc from './addsubtrsc.vue'
 const { findBooksByThirdCtgyId, findBooksBySecondCtgyId, storeRefs } = books
-const { bookList } = storeRefs
+const { getBookList } = storeRefs
 const { getSwitchThrdCtgyIndex } = FstToThrdCtgy.storeRefs
 if (getSwitchThrdCtgyIndex.value === -1) {
   findBooksBySecondCtgyId()

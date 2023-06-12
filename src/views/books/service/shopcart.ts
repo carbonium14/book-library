@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import Books from './index'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { Ref, computed, ref } from 'vue'
+import router from '../../../router/index'
 type BallType = {
   showorhidden: boolean,
   curTarget?: EventTarget | null
@@ -15,6 +16,7 @@ export default class Shopcart {
   static ball: Ref<BallType> = ref({
     showorhidden: false, 
   })
+  static isSelectAll: Ref<boolean> = ref(false)
   static beforeDrop(ele: Element) {
     const curBallEle = ele as HTMLBodyElement
     const addBtnEle = <HTMLBodyElement>Shopcart.ball.value.curTarget
@@ -140,6 +142,90 @@ export default class Shopcart {
       if (shopCartList?.length > 0) {
         shopCartList.forEach((shopcart) => {
           totalPrice += shopcart.purcharsenum * shopcart.bookprice
+        })
+      }
+      return procDecimalZero(totalPrice)
+    })
+    return {
+      totalCount,
+      totalPrice
+    }
+  }
+  static toShopCartList() {
+    router.push({
+      path: '/shopcartlist'
+    })
+  }
+  static async appOrSubtrBookInShopCart(shopcart: ShopCart, event: Event) {
+    const curtarget = <HTMLBodyElement>event.currentTarget
+    const className = curtarget.className
+    if (className === 'shopcart-operate-add') {
+      shopcart.purcharsenum += 1
+    } else if (className === 'shopcart-operate-minus') {
+      shopcart.purcharsenum -= 1
+    }
+    await Shopcart.store.appOrSubtrBookFrmShopCart(shopcart)
+  }
+  static async delCurBookInSC(shopcart: ShopCart) {
+    ElMessageBox.confirm('确定从购物车删除这本书?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '再想想',
+      type: 'warning',
+      center: true
+    }).then(async () => {
+      await Shopcart.store.delBookFrmSC(shopcart.shopcartid!)
+      ElMessage.success({
+        message: '删除成功'
+      })
+    }).catch(() => {
+      ElMessage.error({
+        message: '删除失败'
+      })
+    })
+  }
+  static back() {
+    router.back()
+  }
+  static gotoctgy() {
+    router.push({
+      path: '/ctgy'
+    })
+  }
+  static selectAll() {
+    const shopCartList = Shopcart.store.getShopCartList.map((shopcart) => {
+      shopcart.checked = !Shopcart.isSelectAll.value
+      return shopcart
+    })
+    Shopcart.store.storeShopCartList(shopCartList)
+  }
+  static checkEveryCheckBox() {
+    const isSelectAll = Shopcart.store.getShopCartList.every((shopcart) => {
+      return shopcart.checked
+    })
+    Shopcart.store.storeShopCartList(Shopcart.store.getShopCartList)
+    Shopcart.isSelectAll.value = isSelectAll
+  }
+  static refreshInShopCartList() {
+    const totalCount = computed(() => {
+      let totalCount: number = 0
+      const shopCartList = Shopcart.store.getShopCartList
+      if (shopCartList?.length > 0) {
+        shopCartList.forEach((shopcart) => {
+          if (shopcart.checked === true) {
+            totalCount += shopcart.purcharsenum
+          }
+        })
+      }
+      return totalCount
+    })
+    const totalPrice = computed(() => {
+      let totalPrice: number = 0
+      const shopCartList = Shopcart.store.getShopCartList
+      if (shopCartList?.length > 0) {
+        shopCartList.forEach((shopcart) => {
+          if (shopcart.checked === true) {
+            totalPrice += shopcart.purcharsenum * shopcart.bookprice
+          }
         })
       }
       return procDecimalZero(totalPrice)

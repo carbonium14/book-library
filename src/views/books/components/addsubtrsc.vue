@@ -1,30 +1,46 @@
 <template>
   <div class="shopcart">
-    <div class="addBtn" v-show="bookitem.purcharsenum === 0">
-      <div class="addBtn-inner" @click="addBookToShopCart(bookitem)">添加到购物车</div>
+    <div class="addBtn" v-if="bookitem && bookitem.purcharsenum === 0">
+      <div class="addBtn-inner" @click="addBookToShopCart(bookitem!)">添加到购物车</div>
     </div>
-    <div class="shopcart-operate" v-show="bookitem.purcharsenum >= 1">
-      <span class="shopcart-operate-minus" v-show="bookitem.purcharsenum > 1" @click="(e) => appOrSubtrBookFrmShopCart(bookitem, e)">
-        <span class="inner">-</span>
-      </span>
-      <span class="shopcart-operate-del" v-show="bookitem.purcharsenum === 1" @click="delCurBookFrmSC(bookitem)">
-        <span class="inner"><font-awesome-icon icon="fa-solid fa-trash" class="shanchu"/></span>
-      </span>
-      <span class="purchasenum">{{ bookitem.purcharsenum }}</span>
-      <span class="shopcart-operate-add" @click="(e) => appOrSubtrBookFrmShopCart(bookitem, e)">
-        <span class="inner">+</span>
-      </span>
+    <div v-else>
+      <div class="shopcart-operate" v-if="bookitem && bookitem.purcharsenum >= 1">
+        <span class="shopcart-operate-minus" v-show="bookitem!.purcharsenum > 1" @click="(e) => appOrSubtrBookFrmShopCart(bookitem!, e)">
+          <span class="inner">-</span>
+        </span>
+        <span class="shopcart-operate-del" v-show="bookitem!.purcharsenum === 1" @click="delCurBookFrmSC(bookitem!)">
+          <span class="inner"><font-awesome-icon icon="fa-solid fa-trash" class="shanchu"/></span>
+        </span>
+        <span class="purchasenum">{{ bookitem!.purcharsenum }}</span>
+        <span class="shopcart-operate-add" @click="(e) => appOrSubtrBookFrmShopCart(bookitem!, e)">
+          <span class="inner">+</span>
+        </span>
+      </div>
+      <div class="shopcart-operate" v-else-if="shopcart && shopcart.bookisbn">
+        <span class="shopcart-operate-minus" v-show="shopcart!.purcharsenum > 1" @click="(e) => appOrSubtrBookInShopCart(shopcart!, e)">
+          <span class="inner">-</span>
+        </span>
+        <span class="shopcart-operate-del" v-show="shopcart!.purcharsenum === 1" @click="delCurBookInSC(shopcart!)">
+          <span class="inner"><font-awesome-icon icon="fa-solid fa-trash" class="shanchu"/></span>
+        </span>
+        <span class="purchasenum">{{ shopcart!.purcharsenum }}</span>
+        <span class="shopcart-operate-add" @click="(e) => appOrSubtrBookInShopCart(shopcart!, e)">
+          <span class="inner">+</span>
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ShopCart } from '../../../store/shopcart/state'
 import { BookInfo } from '../../../store/book/state'
 import Shopcart from '../service/shopcart'
-const { bookitem } = defineProps<{
-  bookitem: BookInfo
+defineProps<{
+  bookitem?: BookInfo
+  shopcart?: ShopCart
 }>()
-const { addBookToShopCart, appOrSubtrBookFrmShopCart, delCurBookFrmSC } = Shopcart
+const { addBookToShopCart, appOrSubtrBookFrmShopCart, delCurBookFrmSC, appOrSubtrBookInShopCart, delCurBookInSC } = Shopcart
 </script>
 
 <style lang="scss" scoped>

@@ -16,7 +16,10 @@ export default class Books {
   static async findBooksByThirdCtgyId(sortField: string = 'ISBN', ascOrDesc: string = 'asc') {
     const thirdCtgyId = FstToThrdCtgy.store.getThirdCtgy.thirdCtgyId
     await Books.store.findBooksByThirdCtgyId(thirdCtgyId, sortField, ascOrDesc)
-    await Shopcart.findCurUseShopCartLst()
+    const shopcartlist = Shopcart.store.shopCartList
+    if (!shopcartlist || shopcartlist.length === 0) {
+      await Shopcart.findCurUseShopCartLst()
+    }
     Books.uptBookNumWithSCLstNum()
   }
   static findBooksBySecondCtgyId(sortField: string = 'ISBN', ascOrDesc: string = 'asc') {

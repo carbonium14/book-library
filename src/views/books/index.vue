@@ -42,5 +42,6 @@ import shopcart from './components/shopcart.vue'
   top: 2.7rem;
   width: 5.04rem;
   margin: 0.18rem;
+  padding-bottom: 0.8rem;
 }
 </style>
