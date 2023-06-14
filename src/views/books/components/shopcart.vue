@@ -26,7 +26,8 @@
 <script setup lang="ts">
 import Shopcart from '../service/shopcart'
 const { totalPrice, totalCount } = Shopcart.refreshShopCartList()
-const { beforeDrop, dropping, afterDrop, ball, toShopCartList } = Shopcart
+const { beforeDrop, dropping, afterDrop, ball, toShopCartList, init } = Shopcart
+init()
 </script>
 
 <style lang="scss" scoped>

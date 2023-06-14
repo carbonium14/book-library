@@ -17,6 +17,11 @@ export default class Shopcart {
     showorhidden: false, 
   })
   static isSelectAll: Ref<boolean> = ref(false)
+  static async init() {
+    if (Shopcart.store.shopCartList.length === 0) {
+      await Shopcart.findCurUseShopCartLst()
+    }
+  }
   static beforeDrop(ele: Element) {
     const curBallEle = ele as HTMLBodyElement
     const addBtnEle = <HTMLBodyElement>Shopcart.ball.value.curTarget

@@ -6,6 +6,9 @@ function getValArrOfObj<T extends any[], K extends keyof EleOfArr<T>, E = EleOfA
 function isPlainObject(val: unknown): val is object {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
+function isString(val: any): val is string {
+  return typeof val === 'string'
+}
 export enum OPTION {
   ACCUMU = 0,
   ADDORAPPOBJTOARR = 2,
@@ -17,6 +20,7 @@ class Storage {
   set(key: string, value: object): any
   set(key: string, value: any[]): any
   set(key: string, value: any[], option: OPTION): any
+  set(key: string, value: string, option: OPTION): any
   set(key: string, value: object, option: OPTION, propkey: string, propvalue: any): any
   set(key: string, value: any, option: OPTION = OPTION.NONE, propkey: string = '', propvalue?: any) {
     if (isPlainObject(value) && option === OPTION.ADDORAPPOBJTOARR) {
@@ -34,9 +38,13 @@ class Storage {
         goodStorage.set(key, arr)
         return arr
       }
-    } else if (Array.isArray(value) && option === OPTION.ACCUMU) {
+    } else if (option === OPTION.ACCUMU) {
       const arr: any[] = goodStorage.get(key, [])
-      arr.push(...value)
+      if (Array.isArray(value)) {
+        arr.push(...value)
+      } else if (isString(value) && !arr.includes(value)) {
+        arr.push(value)
+      }
       goodStorage.set(key, arr)
       return arr
     }

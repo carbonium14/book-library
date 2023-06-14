@@ -4,7 +4,7 @@
     <div class="tosearch">
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon-fangdajing"/>
       <div class="tosearch-keyword">
-        <input type="text" class="tosearch-keyword-input"/>
+        <input type="text" class="tosearch-keyword-input" @click="toSearch"/>
         <span class="keyword">{{ getThirdCtgy.thirdName }}</span>
         <font-awesome-icon icon="fa-solid fa-xmark" class="icon-close"/>
       </div>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import FstToThrdCtgy from '../../ctgy/service/index'
 const { getThirdCtgy } = FstToThrdCtgy.storeRefs
-const { back } = FstToThrdCtgy
+const { back, toSearch } = FstToThrdCtgy
 </script>
 
 <style lang="scss" scoped>
@@ -53,6 +53,7 @@ const { back } = FstToThrdCtgy
         height: 0.3rem;
         background-color: transparent;
         border: none;
+        outline: none;
       }
       .keyword, &-input, .icon-close {
         grid-row: 1 / 2;

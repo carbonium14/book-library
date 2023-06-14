@@ -27,7 +27,7 @@
           <span>月销{{ item.monthsalecount }}</span>
         </div>
         <div class="ranklist">
-          <span>图书畅销总排行榜第{{ index + 1 }}名</span>
+          <span>图书畅销总排行榜第{{ item.ranking }}名</span>
         </div>
         <div>
           <addsubtrsc :bookitem="item"></addsubtrsc>

@@ -82,4 +82,9 @@ export default class FstToThrdCtgy {
       return [currentCtgy, ...newThirdCtgyList.slice(0, currentIndex), ...newThirdCtgyList.slice(currentIndex + 1)]
     })
   }
+  static toSearch() {
+    router.push({
+      path: '/search'
+    })
+  }
 }
