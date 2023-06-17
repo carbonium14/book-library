@@ -5,8 +5,11 @@ import { SecondCtgy, ThirdCtgy } from '../../../store/ctgy/state'
 import { storeToRefs } from 'pinia'
 import router from '../../../router/index'
 import Books from '../../books/service/index'
+import bookStore from '../../../store/book/index'
+import { Operate } from '../../../store/book/state'
 export default class FstToThrdCtgy {
   static store = ctgyStore()
+  static bkStore = bookStore()
   static storeRefs = storeToRefs(FstToThrdCtgy.store)
   static firstCtgyActiveIndex: Ref<number> = ref(0)
   static async getFirstCtgys() {
@@ -48,6 +51,7 @@ export default class FstToThrdCtgy {
     FstToThrdCtgy.store.storeSubThirdCtgyList(secondCtgy.subThirdCtgys)
     FstToThrdCtgy.store.storeIsReadyOpen(secondCtgy.isReadyOpen)
     FstToThrdCtgy.store.storeSwitchThrdCtgyIndex(thirdCtgy.thirdCtgyId)
+    FstToThrdCtgy.bkStore.storeOperate(Operate.THRDCTGYID)
     router.push({
       name: 'books'
     })
@@ -63,8 +67,10 @@ export default class FstToThrdCtgy {
     const sortField = goodStorage.get('sortField') || 'ISBN'
     const ascOrDesc = goodStorage.get('ascOrDesc') || 'asc'
     if (thrdCtgyActiveIndex === -1) {
+      FstToThrdCtgy.bkStore.storeOperate(Operate.SECCTGYID)
       await Books.store.findBooksBySecondCtgyId(FstToThrdCtgy.store.getSecondCtgy.secondCtgyId, sortField, ascOrDesc)
     } else {
+      FstToThrdCtgy.bkStore.storeOperate(Operate.THRDCTGYID)
       const thirdCtgy = FstToThrdCtgy.store.getThirdCtgyList.find((thirdCtgy) => thirdCtgy.thirdCtgyId === thrdCtgyActiveIndex)!
       FstToThrdCtgy.store.storeThirdCtgy(thirdCtgy)
       await Books.store.findBooksByThirdCtgyId(thrdCtgyActiveIndex, sortField, ascOrDesc)

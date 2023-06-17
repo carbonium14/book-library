@@ -10,7 +10,8 @@ export default defineStore('searchstore', {
       keyword: initKeywordVal,
       keywordList: [] as Keyword[],
       historykeywordList: [] as string[],
-      historykeywordObjList: [] as HistoryKeyword[]
+      historykeywordObjList: [] as HistoryKeyword[],
+      autoCompKeyword: '',
     }
   },
   getters: {
@@ -22,6 +23,9 @@ export default defineStore('searchstore', {
     },
     getHistoryKeywordObjList(state): HistoryKeyword[] {
       return state.historykeywordObjList.length > 0 ? state.historykeywordObjList : storage.get('historykeywordObjList')
+    },
+    getAutoCompKeyword(state) {
+      return state.autoCompKeyword.length > 0 ? state.autoCompKeyword : storage.get('autoCompKeyword')
     }
   },
   actions: {
@@ -64,6 +68,10 @@ export default defineStore('searchstore', {
       if (result.data > 0) {
         await this.searchHistoryKeywordObjList()
       }
+    },
+    storeAutoCompKeyword(autoCompKeyword: string) {
+      this.autoCompKeyword = autoCompKeyword
+      storage.set('autoCompKeyword', autoCompKeyword)
     }
   }
 })

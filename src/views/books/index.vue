@@ -6,11 +6,11 @@
   <div class="bookctgys">
     <breadcrumbs></breadcrumbs>
     <thrdctgys></thrdctgys>
-    <booksort></booksort>
+    <booksort :ctrlShopCart="ctrlShopCart"></booksort>
     <bookItem></bookItem>
   </div>
   <div>
-    <shopcart></shopcart>
+    <shopcart ref="shopcartRef"></shopcart>
   </div>
 </template>
 
@@ -22,6 +22,11 @@ import thrdctgys from './components/thrdctgys.vue'
 import bookItem from './components/bookitem.vue'
 import booksort from './components/booksort.vue'
 import shopcart from './components/shopcart.vue'
+import { ref } from 'vue'
+const shopcartRef = ref()
+function ctrlShopCart(isShow: boolean) {
+  shopcartRef.value!.ctrlShopCart(isShow)
+}
 </script>
 
 <style lang="scss" scoped>

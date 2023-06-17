@@ -1,5 +1,5 @@
 <template>
-  <div class="shopcart">
+  <div class="shopcart" v-show="isShow">
     <div class="content">
       <div class="content-left" @click="toShopCartList">
         <font-awesome-icon icon="fa-solid fa-cart-shopping" class="gouwuche" :class="{ highlight: totalCount > 0 }"/>
@@ -26,7 +26,10 @@
 <script setup lang="ts">
 import Shopcart from '../service/shopcart'
 const { totalPrice, totalCount } = Shopcart.refreshShopCartList()
-const { beforeDrop, dropping, afterDrop, ball, toShopCartList, init } = Shopcart
+const { beforeDrop, dropping, afterDrop, ball, toShopCartList, init, ctrlShopCart, isShow } = Shopcart
+defineExpose({
+  ctrlShopCart
+})
 init()
 </script>
 

@@ -1,6 +1,7 @@
+import { Operate } from '../store/book/state'
 import goodStorage from 'good-storage'
 type EleOfArr<T> = T extends Array<infer E> ? E : never
-function getValArrOfObj<T extends any[], K extends keyof EleOfArr<T>, E = EleOfArr<T>>(t: T, k: K) {
+export function getValArrOfObj<T extends any[], K extends keyof EleOfArr<T>, E = EleOfArr<T>>(t: T, k: K) {
   return t.map(({[k]: v}: E) => v)
 }
 function isPlainObject(val: unknown): val is object {
@@ -19,6 +20,7 @@ class Storage {
   set(key: string, value: string): any
   set(key: string, value: object): any
   set(key: string, value: any[]): any
+  set(key: string, value: Operate): any
   set(key: string, value: any[], option: OPTION): any
   set(key: string, value: string, option: OPTION): any
   set(key: string, value: object, option: OPTION, propkey: string, propvalue: any): any

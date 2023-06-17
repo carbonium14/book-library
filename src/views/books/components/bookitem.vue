@@ -41,16 +41,10 @@
 <script setup lang="ts">
 import getImg from '../../../utils/imgUtil'
 import books from '../service/index'
-import FstToThrdCtgy from '../../ctgy/service/index'
 import addsubtrsc from './addsubtrsc.vue'
-const { findBooksByThirdCtgyId, findBooksBySecondCtgyId, storeRefs } = books
+const { storeRefs, searchBooks } = books
 const { getBookList } = storeRefs
-const { getSwitchThrdCtgyIndex } = FstToThrdCtgy.storeRefs
-if (getSwitchThrdCtgyIndex.value === -1) {
-  findBooksBySecondCtgyId()
-} else {
-  findBooksByThirdCtgyId()
-}
+searchBooks()
 </script>
 
 <style lang="scss" scoped>

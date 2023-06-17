@@ -2,9 +2,12 @@ import { storeToRefs } from 'pinia'
 import { Ref, ref } from 'vue'
 import router from '../../../router/index'
 import searchStore, { initKeywordVal } from '../../../store/search/index'
+import bookStore from '../../../store/book/index'
+import { Operate } from '../../../store/book/state'
 export default class Search {
   static isOpenAutoComplete: Ref<boolean> = ref(false)
   static store = searchStore()
+  static bkStore = bookStore()
   static storeRefs = storeToRefs(Search.store)
   static back() {
     router.back()
@@ -46,6 +49,11 @@ export default class Search {
   static async searchBooksByKey(historykeyword: string) {
     await Search.store.addOrUpdateHistoryKeyword(historykeyword)
     Search.showOrCloseAutoComplete(false)
+    Search.bkStore.storeOperate(Operate.AUTOCOMPKEYWORD)
+    Search.store.storeAutoCompKeyword(historykeyword)
+    router.push({
+      path: '/books'
+    })
   }
   static async deleteHistory() {
     await Search.store.deleteHistoryKeywords()

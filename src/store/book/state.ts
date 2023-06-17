@@ -18,3 +18,19 @@ export interface BookInfo {
   isDecimal: boolean,
   ranking: number
 }
+export enum Operate {
+  INIT = 0,
+  SECCTGYID = 1,
+  THRDCTGYID = 2,
+  AUTOCOMPKEYWORD = 3,
+}
+export interface InitStateType {
+  bookList: BookInfo[],
+  operate?: Operate,
+  publisherList: Publisher[],
+  curPublisherList: Publisher[]
+}
+export interface Publisher {
+  publishid: number,
+  publishername: string
+}

@@ -16,7 +16,8 @@ export default class Shopcart {
   static ball: Ref<BallType> = ref({
     showorhidden: false, 
   })
-  static isSelectAll: Ref<boolean> = ref(false)
+  static isSelectAll = ref(false)
+  static isShow = ref(true)
   static async init() {
     if (Shopcart.store.shopCartList.length === 0) {
       await Shopcart.findCurUseShopCartLst()
@@ -239,6 +240,9 @@ export default class Shopcart {
       totalCount,
       totalPrice
     }
+  }
+  static ctrlShopCart(isShow: boolean) {
+    Shopcart.isShow.value = isShow
   }
 }
 function procDecimalZero(num: number) {

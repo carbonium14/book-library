@@ -5,7 +5,7 @@
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon-fangdajing"/>
       <div class="tosearch-keyword">
         <input type="text" class="tosearch-keyword-input" @click="toSearch"/>
-        <span class="keyword">{{ getThirdCtgy.thirdName }}</span>
+        <span class="keyword">{{ getSwitchThrdCtgyIndex === -1 ? '全部' : getThirdCtgy.thirdName }}</span>
         <font-awesome-icon icon="fa-solid fa-xmark" class="icon-close"/>
       </div>
     </div>
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import FstToThrdCtgy from '../../ctgy/service/index'
-const { getThirdCtgy } = FstToThrdCtgy.storeRefs
+const { getThirdCtgy, getSwitchThrdCtgyIndex } = FstToThrdCtgy.storeRefs
 const { back, toSearch } = FstToThrdCtgy
 </script>
 
