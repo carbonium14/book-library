@@ -1,7 +1,7 @@
 <template>
   <div class="shopcart">
     <div class="addBtn" v-if="bookitem && bookitem.purcharsenum === 0">
-      <div class="addBtn-inner" @click="addBookToShopCart(bookitem!)">添加到购物车</div>
+      <div class="addBtn-inner" @click="addBkToShopCartWrapper(bookitem!)">添加到购物车</div>
     </div>
     <div v-else>
       <div class="shopcart-operate" v-if="bookitem && bookitem.purcharsenum >= 1">
@@ -40,7 +40,7 @@ defineProps<{
   bookitem?: BookInfo
   shopcart?: ShopCart
 }>()
-const { addBookToShopCart, appOrSubtrBookFrmShopCart, delCurBookFrmSC, appOrSubtrBookInShopCart, delCurBookInSC } = Shopcart
+const { addBkToShopCartWrapper, appOrSubtrBookFrmShopCart, delCurBookFrmSC, appOrSubtrBookInShopCart, delCurBookInSC } = Shopcart
 </script>
 
 <style lang="scss" scoped>

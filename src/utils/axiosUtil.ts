@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios'
 import conf from '../config'
 import { ElMessage } from 'element-plus'
+import storage from './goodstorageUtil'
+import router from '../router/index'
 const SERVER_ERR = '请求服务器网址错误或网络连接失败'
 type Method = 'get' | 'post' | 'put' | 'delete' | 'patch'
 const methods:Method[] = ['get', 'post', 'put', 'delete', 'patch']
@@ -37,6 +39,11 @@ class AxiosUtil {
   }
   beforeReqIntercpt() {
     this.axiosInstance.interceptors.request.use((request) => {
+      const token = storage.get('token')
+      const header = request.headers
+      if (!header.Authorization && token) {
+        header.Authorization = `Bearer ${token}`
+      }
       return request
     })
   }
@@ -48,6 +55,15 @@ class AxiosUtil {
       } else if (code === 500) {
         ElMessage.error(`发生了错误, ${msg}`)
         return 
+      } else if (code === 401) {
+        if (msg === '这是不合法的或者过期的token') {
+          storage.remove('token')
+          router.push({
+            path: '/login'
+          })
+          ElMessage.error(`发生了错误, ${msg}`)
+          throw new Error(`发生了错误, ${msg}`)
+        }
       } else {
         ElMessage.error('发生了未知错误')
         return

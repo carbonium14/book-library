@@ -6,6 +6,7 @@ import Books from './index'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { Ref, computed, ref } from 'vue'
 import router from '../../../router/index'
+import storage from '../../../utils/goodstorageUtil'
 type BallType = {
   showorhidden: boolean,
   curTarget?: EventTarget | null
@@ -243,6 +244,18 @@ export default class Shopcart {
   }
   static ctrlShopCart(isShow: boolean) {
     Shopcart.isShow.value = isShow
+  }
+  static addBkToShopCartWrapper(bookinfo: BookInfo) {
+    if (storage.get('token')) {
+      Shopcart.addBookToShopCart(bookinfo)
+    } else {
+      ElMessage.info({
+        message: '登录后再执行此操作'
+      })
+      router.push({
+        path: '/login'
+      })
+    }
   }
 }
 function procDecimalZero(num: number) {
