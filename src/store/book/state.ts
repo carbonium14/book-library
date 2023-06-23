@@ -28,7 +28,9 @@ export interface InitStateType {
   bookList: BookInfo[],
   operate?: Operate,
   publisherList: Publisher[],
-  curPublisherList: Publisher[]
+  curPublisherList: Publisher[],
+  bookDetail: BookInfo,
+  ISBN: string
 }
 export interface Publisher {
   publishid: number,

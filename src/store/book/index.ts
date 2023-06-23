@@ -5,6 +5,9 @@ import { AxiosResponse } from 'axios'
 import { Operate, InitStateType, Publisher } from './state'
 import storage from '../../utils/goodstorageUtil'
 import searchStore from '../search/index'
+function hasProps(obj: Record<string, any>) {
+  return Boolean(Object.getOwnPropertyNames(obj).length)
+}
 export default defineStore('bookstore', {
   state:(): InitStateType => {
     return {
@@ -12,6 +15,8 @@ export default defineStore('bookstore', {
       operate: Operate.INIT,
       publisherList: [],
       curPublisherList: [],
+      bookDetail: {} as BookInfo,
+      ISBN: ''
     }
   },
   getters: {
@@ -26,6 +31,12 @@ export default defineStore('bookstore', {
     },
     getCurPublisherList(state): Publisher[] {
       return state.curPublisherList
+    },
+    getBookDetail(state): BookInfo {
+      return hasProps(state.bookDetail) ? state.bookDetail : storage.get('bookDetail')
+    },
+    getISBN(state) {
+      return state.ISBN.length > 0 ? state.ISBN : storage.get('ISBN')
     }
   },
   actions: {
@@ -64,6 +75,16 @@ export default defineStore('bookstore', {
     },
     storeCurPublisherList(curPublisherList: Publisher[]) {
       this.curPublisherList = curPublisherList
+    },
+    async findBookDetailsByISBN() {
+      const bookDetail: AxiosResponse<BookInfo> = await bookApi.findBookDetailsByISBN(this.getISBN)
+      bookDetail.data.discountprice = toFixed_(bookDetail.data.originalprice * bookDetail.data.discount)
+      this.bookDetail = bookDetail.data
+      storage.set('bookDetail', bookDetail.data)
+    },
+    storeISBN(ISBN: string) {
+      this.ISBN = ISBN
+      storage.set('ISBN', ISBN)
     }
   }
 })

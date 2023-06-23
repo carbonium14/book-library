@@ -16,5 +16,8 @@ class BookApi {
   findBksByPublishIds(publishids: number[]) {
     return request.post(`/booksmodule/findBksByPublishIds`, false, publishids)
   }
+  findBookDetailsByISBN(ISBN: string) {
+    return request.get(`/booksmodule/findBooksByISBN/${ISBN}`, false)
+  }
 }
 export default BookApi.api

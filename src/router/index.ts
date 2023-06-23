@@ -6,6 +6,9 @@ const books = () => import('../views/books/index.vue')
 const shopcartlist = () => import('../views/shopcartlist/shopcartlist.vue')
 const search = () => import('../views/search/index.vue')
 const login = () => import('../views/userinfo/login.vue')
+const bookdetail = () => import('../views/bookdetail/index.vue')
+const goods = () => import('../views/bookdetail/components/goods.vue')
+const evaluate = () => import('../views/bookdetail/components/evaluate/index.vue')
 const routes: RouteRecordRaw[] = [{
   name: 'default',
   path: '/',
@@ -40,6 +43,20 @@ const routes: RouteRecordRaw[] = [{
       next()
     }
   }
+}, {
+  name: 'bookdetail',
+  path: '/bookdetail',
+  redirect: '/goods',
+  component: bookdetail,
+  children: [{
+    name: 'goods',
+    path: '/goods',
+    component: goods
+  }, {
+    name: 'evaluate',
+    path: '/evaluate',
+    component: evaluate
+  }]
 }]
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

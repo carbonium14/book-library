@@ -5,7 +5,7 @@
       <input type="text" class="username-input" name="username" placeholder="昵称、手机号、邮箱" v-model="username" />
     </div>
     <div class="psw">
-      <input type="text" class="psw-input" name="psw" placeholder="密码" v-model="psw" />
+      <input type="password" class="psw-input" name="psw" placeholder="密码" v-model="psw" />
     </div>
     <div class="loginbtn" @click="login">登录</div>
   </div>

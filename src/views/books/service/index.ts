@@ -136,4 +136,10 @@ export default class Books {
   static resetPublishList() {
     Books.store.storeCurPublisherList([])
   }
+  static toBookDetail(ISBN: string) {
+    Books.store.storeISBN(ISBN)
+    router.push({
+      path: '/bookdetail'
+    })
+  }
 }

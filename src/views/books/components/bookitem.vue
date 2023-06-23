@@ -1,5 +1,5 @@
 <template>
-  <div class="bookitem" v-for="(item, index) in getBookList" :key="item.ISBN">
+  <div class="bookitem" v-for="(item, index) in getBookList" :key="item.ISBN" @click="toBookDetail(item.ISBN)">
     <img class="book-pic" :src="getImg(item.bookpicname)" alt="图书" />
     <div class="bookinfo">
       <div class="bookinfo-brief">
@@ -29,7 +29,7 @@
         <div class="ranklist">
           <span>图书畅销总排行榜第{{ item.ranking }}名</span>
         </div>
-        <div>
+        <div @click.stop>
           <addsubtrsc :bookitem="item"></addsubtrsc>
         </div>
       </div>
@@ -42,7 +42,7 @@
 import getImg from '../../../utils/imgUtil'
 import books from '../service/index'
 import addsubtrsc from './addsubtrsc.vue'
-const { storeRefs, searchBooks } = books
+const { storeRefs, searchBooks, toBookDetail } = books
 const { getBookList } = storeRefs
 searchBooks()
 </script>
