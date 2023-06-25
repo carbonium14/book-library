@@ -33,6 +33,9 @@ export default class BookDetail {
   static back() {
     router.back()
   }
+  static setHeaderOpacity(opacity: number) {
+    BookDetail.headerOpacity.value.opacity = opacity
+  }
   static init() {
     window.pageYOffset = 0
     document.body.scrollTop = 0

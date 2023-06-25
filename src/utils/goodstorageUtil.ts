@@ -53,8 +53,8 @@ class Storage {
     goodStorage.set(key, value)
     return value
   }
-  get(key: string): any
-  get(key: string, option: OPTION): any
+  get<T = any>(key: string): T
+  get<T = any>(key: string, option: OPTION): T
   get(key: string, option: OPTION = OPTION.NONE) {
     if (option === OPTION.ACCUMU || option === OPTION.ADDORAPPOBJTOARR) {
       return goodStorage.get(key, [])

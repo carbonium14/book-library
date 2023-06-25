@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :style="headerOpacity">
+  <div class="header" v-show="headAndDegree" :style="headerOpacity">
     <font-awesome-icon icon="fa-solid fa-arrow-left" class="left-arrow" @click="back"/>
     <div class="header-wrapper">
       <span v-for="(item, index) in navList" :key="index" :class="{ 'item-active' : index === activeIndex }" @click="switchTab(index)">
@@ -11,7 +11,9 @@
 
 <script setup lang="ts">
 import BookDetail from '../service/index'
+import EvaluateClass from '../service/evaluate'
 const { headerOpacity, navList, activeIndex, switchTab, back } = BookDetail
+const { headAndDegree } = EvaluateClass.storeRefs
 </script>
 
 <style lang="scss" scoped>
