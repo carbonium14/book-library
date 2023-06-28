@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { BookInfo } from './state'
+import { BookInfo, CurPageDataType } from './state'
 import bookApi from '../../api/BookApi'
 import { AxiosResponse } from 'axios'
 import { Operate, InitStateType, Publisher } from './state'
@@ -16,7 +16,17 @@ export default defineStore('bookstore', {
       publisherList: [],
       curPublisherList: [],
       bookDetail: {} as BookInfo,
-      ISBN: ''
+      ISBN: '',
+      curPageAllData: {
+        curPageNo: 0,
+        curPageDataList: [],
+        totalPageNum: 0
+      },
+      headerRef: undefined,
+      headerHeight: 0,
+      headerOpacity: {
+        opacity: 1
+      }
     }
   },
   getters: {
@@ -37,6 +47,15 @@ export default defineStore('bookstore', {
     },
     getISBN(state) {
       return state.ISBN.length > 0 ? state.ISBN : storage.get('ISBN')
+    },
+    isLastPage(state) {
+      return state.curPageAllData.curPageNo === state.curPageAllData.totalPageNum
+    },
+    getCurPageData(state): CurPageDataType {
+      return state.curPageAllData
+    },
+    getCurPageBookList(state): BookInfo[] {
+      return state.curPageAllData.curPageDataList
     }
   },
   actions: {
@@ -85,6 +104,20 @@ export default defineStore('bookstore', {
     storeISBN(ISBN: string) {
       this.ISBN = ISBN
       storage.set('ISBN', ISBN)
+    },
+    async findBookLstWithPager() {
+      if (!this.curPageAllData.curPageNo || this.curPageAllData.curPageNo < this.curPageAllData.totalPageNum) {
+        this.curPageAllData.curPageNo += 1
+        const curPageData: AxiosResponse<CurPageDataType> = await bookApi.findBookLstWithPager(this.curPageAllData.curPageNo)
+        if (this.curPageAllData.curPageDataList.length === 0) {
+          this.curPageAllData = curPageData.data
+        } else {
+          const { curPageNo, totalPageNum } = curPageData.data
+          this.curPageAllData.curPageDataList.push(...curPageData.data.curPageDataList)
+          Object.assign(this.curPageAllData, { curPageNo, totalPageNum })
+        }
+        this.curPageAllData.curPageDataList= calBookPrice(this.curPageAllData.curPageDataList)
+      }
     }
   }
 })

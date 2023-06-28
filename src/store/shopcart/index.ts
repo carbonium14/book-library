@@ -1,4 +1,3 @@
-import goodStorage from 'good-storage';
 import { defineStore } from 'pinia'
 import ShopCartApi from '../../api/ShopCartApi'
 import { ShopCart, initShopCart } from './state'
@@ -12,7 +11,7 @@ export default defineStore('shopcartstore', {
   },
   getters: {
     getShopCartList(state): ShopCart[] {
-      return state.shopCartList.length > 0 ? state.shopCartList : goodStorage.get('shopCartList')
+      return state.shopCartList.length > 0 ? state.shopCartList : storage.get('shopCartList', OPTION.ARR)
     }
   },
   actions: {

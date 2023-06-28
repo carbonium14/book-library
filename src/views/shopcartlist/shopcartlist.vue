@@ -6,7 +6,7 @@
       <span class="booklabel">图书购物商城</span>
     </div>
     <div class="items">
-      <div class="item" v-for="(item, index) in getShopCartList" :key="item.bookisbn">
+      <div class="item" v-for="item in getShopCartList" :key="item.bookisbn">
         <div class="content">
           <input type="checkbox" class="check" v-model="item.checked" @change="checkEveryCheckBox"/>
           <div class="pic">
@@ -29,7 +29,7 @@
         <div class="gotoctgy" @click="gotoctgy">去逛逛</div>
       </div>
     </div>
-    <div class="cal">
+    <div class="cal" v-if="getShopCartList.length > 0">
       <span class="checkall">
         <input type="checkbox" class="check" v-model="isSelectAll" @click="selectAll"/>
         <span class="selall" @click="selectAll">全选</span>
@@ -41,12 +41,14 @@
       <span class="pay">去结算({{ totalCount }})</span>
     </div>
   </div>
+  <Bottom></Bottom>
 </template>
 
 <script setup lang="ts">
 import getImg from '../../utils/imgUtil'
 import Shopcart from '../books/service/shopcart'
 import addsubtrsc from '../books/components/addsubtrsc.vue'
+import Bottom from '../common/bottom.vue'
 const { getShopCartList } = Shopcart.storeRefs
 const { totalCount, totalPrice } = Shopcart.refreshInShopCartList()
 const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
@@ -76,7 +78,7 @@ const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
     overflow-y: auto;
     position: absolute;
     top: 0.86rem;
-    bottom: 0.865rem;
+    bottom: 1.565rem;
     z-index: 0;
     display: grid;
     grid-template-columns: 5.14rem;
@@ -156,7 +158,7 @@ const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
     position: fixed;
     width: 5.14rem;
     margin: 0rem 0.13rem;
-    bottom: 0rem;
+    bottom: 0.7rem;
     left: 0rem;
     height: 0.86rem;
     z-index: 1;

@@ -13,7 +13,8 @@ function isString(val: any): val is string {
 export enum OPTION {
   ACCUMU = 0,
   ADDORAPPOBJTOARR = 2,
-  NONE = -1
+  NONE = -1,
+  ARR = 3
 }
 class Storage {
   static storage: Storage = new Storage()
@@ -56,7 +57,7 @@ class Storage {
   get<T = any>(key: string): T
   get<T = any>(key: string, option: OPTION): T
   get(key: string, option: OPTION = OPTION.NONE) {
-    if (option === OPTION.ACCUMU || option === OPTION.ADDORAPPOBJTOARR) {
+    if (option === OPTION.ACCUMU || option === OPTION.ARR || option === OPTION.ADDORAPPOBJTOARR) {
       return goodStorage.get(key, [])
     } else {
       return goodStorage.get(key) || ''

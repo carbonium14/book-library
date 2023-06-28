@@ -9,10 +9,11 @@ const login = () => import('../views/userinfo/login.vue')
 const bookdetail = () => import('../views/bookdetail/index.vue')
 const goods = () => import('../views/bookdetail/components/goods.vue')
 const evaluate = () => import('../views/bookdetail/components/evaluate/index.vue')
+const home = () => import('../views/home/home.vue')
 const routes: RouteRecordRaw[] = [{
   name: 'default',
   path: '/',
-  component: ctgy
+  component: home
 }, {
   name: 'ctgy',
   path: '/ctgy',
@@ -57,6 +58,10 @@ const routes: RouteRecordRaw[] = [{
     path: '/evaluate',
     component: evaluate
   }]
+}, {
+  name: 'home',
+  path: '/home',
+  component: home
 }]
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

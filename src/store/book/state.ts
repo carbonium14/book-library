@@ -30,9 +30,20 @@ export interface InitStateType {
   publisherList: Publisher[],
   curPublisherList: Publisher[],
   bookDetail: BookInfo,
-  ISBN: string
+  ISBN: string,
+  curPageAllData: CurPageDataType,
+  headerRef: HTMLBodyElement | undefined,
+  headerHeight: number,
+  headerOpacity: {
+    opacity: number
+  }
 }
 export interface Publisher {
   publishid: number,
   publishername: string
+}
+export interface CurPageDataType {
+  curPageDataList: BookInfo[],
+  totalPageNum: number,
+  curPageNo: number
 }
