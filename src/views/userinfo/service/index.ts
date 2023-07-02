@@ -14,7 +14,7 @@ export default class UserInfo {
     await UserInfo.store.login(UserInfo.username.value, UserInfo.psw.value)
     if (storage.get('token')) {
       router.push({
-        path: 'ctgy'
+        path: 'home'
       })
     }
   }

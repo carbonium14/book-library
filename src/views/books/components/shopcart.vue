@@ -1,11 +1,11 @@
 <template>
   <div class="shopcart" v-show="isShow">
     <div class="content">
-      <div class="content-left" @click="toShopCartList">
-        <font-awesome-icon icon="fa-solid fa-cart-shopping" class="gouwuche" :class="{ highlight: totalCount > 0 }"/>
+      <div class="content-left">
+        <font-awesome-icon icon="fa-solid fa-cart-shopping" class="gouwuche" :class="{ highlight: totalCount > 0 }"  @click="toShopCartList"/>
         <div class="num" v-show="totalCount > 0">{{ totalCount }}</div>
       </div>
-      <div class="content-right">
+      <div class="content-right" @click="toShopCartList">
         <div class="totalprice">&yen;&nbsp;{{ totalPrice }}</div>
         <div class="topay">
           去支付

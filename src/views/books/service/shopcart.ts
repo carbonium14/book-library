@@ -7,6 +7,7 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { Ref, computed, ref } from 'vue'
 import router from '../../../router/index'
 import storage from '../../../utils/goodstorageUtil'
+import Bottom from '../../common/index'
 type BallType = {
   showorhidden: boolean,
   curTarget?: EventTarget | null
@@ -17,7 +18,7 @@ export default class Shopcart {
   static ball: Ref<BallType> = ref({
     showorhidden: false, 
   })
-  static isSelectAll = ref(false)
+  static isSelectAll = ref(true)
   static isShow = ref(true)
   static async init() {
     if (Shopcart.store.shopCartList.length === 0) {
@@ -66,7 +67,7 @@ export default class Shopcart {
   static async addBookToShopCart(bookinfo: BookInfo) {
     const shopcart: ShopCart = {
       userid: 1,
-      checked: false,
+      checked: true,
       bookisbn: bookinfo.ISBN,
       bookname: bookinfo.bookname,
       bookpicname: bookinfo.bookpicname,
@@ -102,7 +103,7 @@ export default class Shopcart {
     }
     const shopcart: ShopCart = {
       userid: 1,
-      checked: false,
+      checked: true,
       shopcartid: curShopCartID,
       bookisbn: bookinfo.ISBN,
       bookname: bookinfo.bookname,
@@ -159,6 +160,7 @@ export default class Shopcart {
     }
   }
   static toShopCartList() {
+    Bottom.change(2)
     router.push({
       path: '/shopcartlist'
     })
@@ -181,6 +183,9 @@ export default class Shopcart {
       center: true
     }).then(async () => {
       await Shopcart.store.delBookFrmSC(shopcart.shopcartid!)
+      if (Shopcart.store.getShopCartList.length === 0) {
+        Shopcart.isSelectAll.value = false
+      }
       ElMessage.success({
         message: '删除成功'
       })
@@ -191,6 +196,7 @@ export default class Shopcart {
     })
   }
   static back() {
+    Bottom.change(1)
     router.back()
   }
   static gotoctgy() {
@@ -256,6 +262,11 @@ export default class Shopcart {
         path: '/login'
       })
     }
+  }
+  static toPay() {
+    router.push({
+      path: '/order'
+    })
   }
 }
 function procDecimalZero(num: number) {

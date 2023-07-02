@@ -7,6 +7,7 @@ import router from '../../../router/index'
 import Books from '../../books/service/index'
 import bookStore from '../../../store/book/index'
 import { Operate } from '../../../store/book/state'
+import Bottom from '../../common/index'
 export default class FstToThrdCtgy {
   static store = ctgyStore()
   static bkStore = bookStore()
@@ -57,6 +58,7 @@ export default class FstToThrdCtgy {
     })
   }
   static back() {
+    Bottom.change(1)
     router.back()
   }
   static openOrCollapseInBook(isReadyOpen: boolean) {

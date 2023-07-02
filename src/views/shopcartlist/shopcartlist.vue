@@ -38,7 +38,7 @@
           <span class="money">&yen;&nbsp;{{ totalPrice }}</span>
         </span>
       </span>
-      <span class="pay">去结算({{ totalCount }})</span>
+      <span class="pay" @click="toPay">去结算({{ totalCount }})</span>
     </div>
   </div>
   <Bottom></Bottom>
@@ -51,7 +51,7 @@ import addsubtrsc from '../books/components/addsubtrsc.vue'
 import Bottom from '../common/bottom.vue'
 const { getShopCartList } = Shopcart.storeRefs
 const { totalCount, totalPrice } = Shopcart.refreshInShopCartList()
-const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
+const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy, toPay } = Shopcart
 </script>
 
 <style lang="scss" scoped>
@@ -82,7 +82,7 @@ const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
     z-index: 0;
     display: grid;
     grid-template-columns: 5.14rem;
-    grid-template-rows: 2.89rem;
+    grid-template-rows: 1.89rem;
     .item {
       .content {
         display: flex;
@@ -134,6 +134,7 @@ const { back, isSelectAll, selectAll, checkEveryCheckBox, gotoctgy } = Shopcart
       justify-content: center;
       align-items: center;
       gap: 0.1rem;
+      margin-top: 1rem;
       .cart {
         width: 1.5rem;
         height: 1.5rem;

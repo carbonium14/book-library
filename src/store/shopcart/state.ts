@@ -9,3 +9,5 @@ export type ShopCart = {
   purcharsenum: number
 }
 export const initShopCart: ShopCart[] = []
+export const chkedSCLst: ShopCart[] = []
+export const subChkedSCLst: ShopCart[] = []

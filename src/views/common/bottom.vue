@@ -29,7 +29,7 @@ const bottomNavList = [{
 }, {
   icon: 'fa-solid fa-user',
   text: '我的',
-  url: '/ctgy'
+  url: '/ordersort'
 }]
 </script>
 

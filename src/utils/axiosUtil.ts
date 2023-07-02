@@ -54,6 +54,14 @@ class AxiosUtil {
         return response.data
       } else if (code === 500) {
         ElMessage.error(`发生了错误, ${msg}`)
+        if (msg === '这是不合法的或者过期的token') {
+          storage.remove('token')
+          router.push({
+            path: '/login'
+          })
+          // ElMessage.error(`发生了错误, ${msg}`)
+          throw new Error(`发生了错误, ${msg}`)
+        }
         return 
       } else if (code === 401) {
         if (msg === '这是不合法的或者过期的token') {

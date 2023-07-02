@@ -10,6 +10,8 @@ const bookdetail = () => import('../views/bookdetail/index.vue')
 const goods = () => import('../views/bookdetail/components/goods.vue')
 const evaluate = () => import('../views/bookdetail/components/evaluate/index.vue')
 const home = () => import('../views/home/home.vue')
+const order = () => import('../views/orderinfo/index.vue')
+const ordersort = () => import('../views/orderinfo/ordersort/index.vue')
 const routes: RouteRecordRaw[] = [{
   name: 'default',
   path: '/',
@@ -38,7 +40,7 @@ const routes: RouteRecordRaw[] = [{
     const token = storage.get('token')
     if (token) {
       next({
-        path: '/ctgy'
+        path: '/home'
       })
     } else {
       next()
@@ -62,12 +64,20 @@ const routes: RouteRecordRaw[] = [{
   name: 'home',
   path: '/home',
   component: home
+}, {
+  name: 'order',
+  path: '/order',
+  component: order
+}, {
+  name: 'ordersort',
+  path: '/ordersort',
+  component: ordersort
 }]
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
-const pathArr = ['/', '/login', '/ctgy']
+const pathArr = ['/login']
 router.beforeEach((to, from, next) => {
   const token = storage.get('token')
   if (token || pathArr.indexOf(to.path) !== -1) {
