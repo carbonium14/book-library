@@ -40,15 +40,15 @@
             </span>
           </div>
           <div class="replylst">
-            <div class="reply" v-for="reply in showReplyLst(item.replyLst, endRplLstIndex)" :key="reply.replyid">
+            <div class="reply" v-for="reply in showReplyLst(item)" :key="reply.replyid">
               <span class="replyor">{{ reply.replyor }}:</span>
               <span class="reply-content">{{ reply.replycontent }}</span>
             </div>
             <div class="allreply">
               <span v-show="isEmpty(item.replyLst)">暂无回复</span>
-              <span v-show="isReadyOpen(item.replyLst)" @click="foldRplLst(item.replyLst)">展开{{ item.replyLst.length }}条回复</span>
+              <span v-show="isReadyOpen(item)" @click="foldRplLst(item)">展开{{ item.replyLst.length }}条回复</span>
             </div>
-            <div class="reply" v-show="isReadyCollapse(item.replyLst)" @click="collapseRplLst()">
+            <div class="reply" v-show="isReadyCollapse(item)" @click="collapseRplLst(item)">
               收起
               <font-awesome-icon icon="fa-solid fa-chevron-up" />
             </div>
@@ -66,8 +66,12 @@
 import getImg from '../../../../../utils/imgUtil'
 import EvaluateClass from '../../../service/evaluate'
 import ReplyClass from '../../../service/reply'
+import { watchEffect } from 'vue'
 const { evalRplLst, reply, cancelreply, cancelRplShowIndx } = EvaluateClass
-const { showReplyLst, endRplLstIndex, foldRplLst, collapseRplLst, isReadyCollapse, isEmpty, isReadyOpen, addReply } = ReplyClass
+const { showReplyLst, foldRplLst, collapseRplLst, isReadyCollapse, isEmpty, isReadyOpen, addReply, initRplLst } = ReplyClass
+watchEffect(() => {
+  initRplLst(evalRplLst.value)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bookitem" v-for="(item, index) in getBookList" :key="item.ISBN" @click="toBookDetail(item.ISBN)">
+  <div class="bookitem" v-for="item in getBookList" :key="item.ISBN" @click="toBookDetail(item.ISBN)">
     <img class="book-pic" :src="getImg(item.bookpicname)" alt="图书" />
     <div class="bookinfo">
       <div class="bookinfo-brief">

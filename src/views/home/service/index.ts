@@ -1,6 +1,8 @@
 import { storeToRefs } from 'pinia'
 import bookStore from '../../../store/book/index'
 import { trimStr } from '../../../utils/stringUtil'
+import Bottom from '../../common/index'
+import router from '../../../router/index'
 export default class Home {
   static store = bookStore()
   static storeToRefs = storeToRefs(Home.store)
@@ -45,6 +47,12 @@ export default class Home {
   static scrollHandler() {
     Home.headerScroll()
     Home.pageScroll()
+  }
+  static toCtgy() {
+    Bottom.change(1)
+    router.push({
+      path: 'ctgy'
+    })
   }
 }
 export { trimStr }

@@ -5,7 +5,7 @@
         全部
       </span>
     </div>
-    <div class="thrdctgys" v-for="(item, index) in ThirdCtgyList" :key="item.thirdCtgyId">
+    <div class="thrdctgys" v-for="item in ThirdCtgyList" :key="item.thirdCtgyId">
       <span :class="{ 'thrdctgys-item': true, 'is-active': item.thirdCtgyId === getSwitchThrdCtgyIndex }" @click="changeThrdCtgyIndex(item.thirdCtgyId)">
         {{ item.thirdName }}
       </span>

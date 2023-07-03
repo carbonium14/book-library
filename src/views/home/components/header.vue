@@ -3,11 +3,11 @@
     <div class="header-title">图书购物</div>
     <div class="header-content">
       <div class="header-searchandsort">
-        <div class="header-search">
+        <div class="header-search" @click="toSearch">
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="fangdajing"/>
           <input type="text" placeholder="请输入图书名称" class="header-search-input" />
         </div>
-        <div class="header-sort">
+        <div class="header-sort" @click="toCtgy">
           <font-awesome-icon icon="fa-regular fa-rectangle-list" class="fenlei" />
           <span class="sort-text">分类</span>
         </div>
@@ -23,7 +23,9 @@
 import { onMounted } from 'vue'
 import getImg from '../../../utils/imgUtil'
 import Home from '../service/index'
-const { init } = Home
+import FstToThrdCtgy from '../../ctgy/service/index'
+const { init, toCtgy } = Home
+const { toSearch } = FstToThrdCtgy
 const { headerOpacity, headerRef } = Home.storeToRefs
 onMounted(() => {
   init()

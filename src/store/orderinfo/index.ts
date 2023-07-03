@@ -67,12 +67,12 @@ export default defineStore('ordAndOrdDetailStore', {
       this.orderinfoLst = setOrdEndTimeAndCutDownTime(convertOrdStatus(ordinfoLst.data))
       storage.set('orderinfoLst', this.orderinfoLst)
     },
-    async uptOrdStatusByOrdId(orderid: number) {
-      await orderInfoApi.uptOrdStatusByOrdId(orderid)
+    async uptOrdStatusByOrdId(orderid: number, orderstatus: number = -1) {
+      await orderInfoApi.uptOrdStatusByOrdId(orderid, orderstatus)
       this.getOrdList.forEach((order) => {
         if (order.orderid === orderid) {
-          order.orderstatus = -1
-          order.strOrderstatus = '订单已取消'
+          order.orderstatus = orderstatus
+          order.strOrderstatus = ordStatusToStrStatus[orderid]
         }
       })
     },
@@ -102,6 +102,12 @@ function getNowTime() {
   const second = now.getSeconds() >= 10 ? now.getSeconds() : `0${now.getSeconds()}`
   return `${year}/${month}/${date} ${hour}:${minute}:${second}`
   // return `${year}/${month}/${date}`
+}
+const ordStatusToStrStatus: { [key: number]: string } = {
+  '1': '等待付款',
+  '2': '交易成功',
+  '3': '待评价',
+  '-1': '订单已取消',
 }
 function convertOrdStatus(relativeOrdList: OrderInfo[]) {
   return relativeOrdList.map((relativeOrd) => {

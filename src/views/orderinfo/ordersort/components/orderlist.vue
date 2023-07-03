@@ -1,6 +1,6 @@
 <template>
   <div class="order" v-if="getSubOrdList">
-    <div class="order-list" v-for="(item, index) in getSubOrdList" :key="item.orderid">
+    <div class="order-list" v-for="item in getSubOrdList" :key="item.orderid">
       <div class="order-status">
         <img class="img" :src="getImg('dangdang.png')" alt="logo">
         <span>图书自营</span>
@@ -13,7 +13,7 @@
         <div>订单下单成功</div>
         <div>{{ item.ordertime }}</div>
       </div>
-      <div class="order-detail-list" v-for="(subitem, index) in item.orderDetailList" :key="subitem.orderdetailid">
+      <div class="order-detail-list" v-for="subitem in item.orderDetailList" :key="subitem.orderdetailid">
         <div class="book-pic">
           <img class="img" :src="getImg(subitem.bookpicname)" alt="图书">
         </div>
@@ -32,12 +32,13 @@
             <span class="countdowntime" v-html="item.countDownTime"></span>
           </div>
           <div class="pay-or-cancelord" v-if="item.orderstatus === 1">
-            <div class="cancel-order">取消订单</div>
-            <div class="immedate-pay">立即支付</div>
+            <div class="cancel-order" @click="cancelOrder(item)">取消订单</div>
+            <div class="immedate-pay" @click="payOrder(item)">立即支付</div>
           </div>
         </div>
       </div>
     </div>
+    <div class="fill" v-show="getSubOrdList.length !== 0"></div>
     <div class="empty-order" v-show="getSubOrdList.length === 0">
       <div class="noorder-descr">
         <span>
@@ -55,17 +56,22 @@
 <script setup lang="ts">
 import getImg from '../../../../utils/imgUtil'
 import OrderInfo from '../../service'
-const { findCurUsrOrdAndOrdDetail } = OrderInfo.ordStore
+import { watchEffect } from 'vue'
+const { findCurUsrOrdAndOrdDetail, setSubOrdList } = OrderInfo.ordStore
 const { getSubOrdList } = OrderInfo.ordStoreRefs
-const { loopCutDownTime } = OrderInfo
+const { loopCutDownTime, cancelOrder, payOrder } = OrderInfo
 findCurUsrOrdAndOrdDetail()
 loopCutDownTime()
+watchEffect(() => {
+  setSubOrdList()
+})
 </script>
 
 <style lang="scss" scoped>
 .order {
   position: absolute;
   top: 1.3rem;
+  bottom: 0.9rem;
   width: 5.1rem;
   &-list {
     width: 100%;
@@ -162,6 +168,10 @@ loopCutDownTime()
         }
       }
     }
+  }
+  .fill {
+    width: 100%;
+    height: 0.9rem;
   }
   .empty-order {
     width: 100%;

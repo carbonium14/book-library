@@ -8,8 +8,8 @@ class OrderInfoApi {
   findCurUsrOrdAndOrdDetail(customerid: number) {
     return request.get(`/ordAndOrdDetailmodule/findCurUsrOrdAndOrdDetail/${customerid}`, false)
   }
-  uptOrdStatusByOrdId(orderid: number) {
-    return request.get(`/ordAndOrdDetailmodule/uptOrdStatusByOrdId/${orderid}/${-1}`, false)
+  uptOrdStatusByOrdId(orderid: number, orderstatus: number = -1) {
+    return request.get(`/ordAndOrdDetailmodule/uptOrdStatusByOrdId/${orderid}/${orderstatus}`, false)
   }
 }
 export default OrderInfoApi.api

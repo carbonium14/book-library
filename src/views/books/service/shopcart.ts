@@ -8,6 +8,7 @@ import { Ref, computed, ref } from 'vue'
 import router from '../../../router/index'
 import storage from '../../../utils/goodstorageUtil'
 import Bottom from '../../common/index'
+import { Userinfo } from '../../../store/userinfo/state'
 type BallType = {
   showorhidden: boolean,
   curTarget?: EventTarget | null
@@ -52,7 +53,7 @@ export default class Shopcart {
     Shopcart.ball.value.curTarget = event.currentTarget
   }
   static async findCurUseShopCartLst() {
-    await Shopcart.store.findCurUseShopCartLst(1)
+    await Shopcart.store.findCurUseShopCartLst(storage.get<Userinfo>('loginUser').userid)
   }
   static uptBookNumWithSCLstNum(books: BookInfo[]) {
     const shopcartList = Shopcart.store.getShopCartList
@@ -66,7 +67,7 @@ export default class Shopcart {
   }
   static async addBookToShopCart(bookinfo: BookInfo) {
     const shopcart: ShopCart = {
-      userid: 1,
+      userid: storage.get<Userinfo>('loginUser').userid,
       checked: true,
       bookisbn: bookinfo.ISBN,
       bookname: bookinfo.bookname,
@@ -102,7 +103,7 @@ export default class Shopcart {
       purcharsenum = bookinfo.purcharsenum - 1
     }
     const shopcart: ShopCart = {
-      userid: 1,
+      userid: storage.get<Userinfo>('loginUser').userid,
       checked: true,
       shopcartid: curShopCartID,
       bookisbn: bookinfo.ISBN,

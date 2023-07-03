@@ -1,7 +1,7 @@
 <template>
   <div class="books">
     <div class="books-wrapper" ref="booksRef">
-      <div class="books-item" v-for="(item, index) in getCurPageBookList" :key="item.ISBN">
+      <div class="books-item" v-for="item in getCurPageBookList" :key="item.ISBN" @click="toBookDetail(item.ISBN)">
         <div class="books-pic">
           <img :src="getImg(item.bookpicname)" alt="图书" class="bookpic" />
         </div>
@@ -14,7 +14,7 @@
           </div>
           <div class="price-and-addcart">
             <span class="price">&yen;{{ item.discountprice }}</span>
-            <span class="shopcart">
+            <span class="shopcart" @click.stop>
               <font-awesome-icon icon="fa-solid fa-cart-shopping" class="gouwuche" />
             </span>
           </div>
@@ -32,7 +32,9 @@
 import getImg from '../../../utils/imgUtil'
 import Home, { trimStr } from '../service/index'
 import Loading from './loading.vue'
+import Books from '../../books/service/index'
 const { findBookLstWithPager } = Home
+const { toBookDetail } = Books
 findBookLstWithPager()
 const { getCurPageBookList, isLastPage } = Home.storeToRefs
 </script>

@@ -24,11 +24,11 @@ class EnvConfigClass {
   initEnvConf() {
     this.envConf = {
       development: {
-        baseApi: '/dang',
+        baseApi: '/bookstore',
         mockBaseApi: ''
       },
       production: {
-        baseApi: 'http://127.0.0.1:5005/dang',
+        baseApi: 'http://127.0.0.1:5005/bookstore',
         mockBaseApi: ''
       }
     }

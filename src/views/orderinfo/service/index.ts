@@ -4,6 +4,7 @@ import router from '../../../router/index'
 import shopcartStore from '../../../store/shopcart/index'
 import orderInfoStore from '../../../store/orderinfo/index'
 import { timeConversion } from '../../../utils/dateUtil'
+import { OrderInfo as OrderInfoType } from '../../../store/orderinfo/state'
 export default class OrderInfo {
   static store = shopcartStore()
   static ordStore = orderInfoStore()
@@ -51,7 +52,7 @@ export default class OrderInfo {
   }
   static loopCutDownTime() {
     watchEffect(() => {
-      const ordList = !OrderInfo.ordStore.getSubOrdList ? [] : OrderInfo.ordStore.getSubOrdList
+      const ordList = !OrderInfo.ordStore.getOrdList ? [] : OrderInfo.ordStore.getOrdList
       ordList.forEach((orderitem) => {
         if (orderitem.orderstatus === 1) {
           orderitem.countdownfn = setInterval(async () => {
@@ -59,7 +60,7 @@ export default class OrderInfo {
             const restSecs = Math.floor(restTimes / 1000)
             if (restSecs === 0) {
               clearInterval(orderitem.countdownfn)
-              await OrderInfo.ordStore.uptOrdStatusByOrdId(orderitem.orderid!)
+              await OrderInfo.ordStore.uptOrdStatusByOrdId(orderitem.orderid!, -1)
             } else {
               orderitem.countDownTime = timeConversion(restTimes)
             }
@@ -69,5 +70,15 @@ export default class OrderInfo {
         }
       })
     })
+  }
+  static async cancelOrder(orderitem: OrderInfoType) {
+    clearInterval(orderitem.countdownfn)
+    await OrderInfo.ordStore.uptOrdStatusByOrdId(orderitem.orderid!, -1)
+    await OrderInfo.ordStore.findCurUsrOrdAndOrdDetail()
+  }
+  static async payOrder(orderitem: OrderInfoType) {
+    clearInterval(orderitem.countdownfn)
+    await OrderInfo.ordStore.uptOrdStatusByOrdId(orderitem.orderid!, 2)
+    await OrderInfo.ordStore.findCurUsrOrdAndOrdDetail()
   }
 }

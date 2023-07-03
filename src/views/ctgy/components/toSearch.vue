@@ -2,7 +2,7 @@
   <div class="content">
     <div class="tosearch">
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="icon-fangdajing"/>
-      <div class="tosearch-keyword">
+      <div class="tosearch-keyword" @click="toSearch">
         <input type="text" class="tosearch-keyword-input" placeholder="请输入...">
         <font-awesome-icon icon="fa-solid fa-qrcode" class="icon-iconfontscan"/>
       </div>
@@ -17,7 +17,8 @@
 </template>
 
 <script setup lang="ts">
-
+import FstToThrdCtgy from '../service/index'
+const { toSearch } = FstToThrdCtgy
 </script>
 
 <style lang="scss" scoped>

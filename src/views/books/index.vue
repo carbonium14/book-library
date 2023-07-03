@@ -1,8 +1,16 @@
 <template>
   <toSearch></toSearch>
-  <div class="adv">
-    <img :src="getImg('1.png')" alt="图片" class="adv-img">
-  </div>
+  <el-carousel class="adv">
+    <el-carousel-item>
+      <img :src="getImg('1.png')" alt="图片" class="adv-img">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img :src="getImg('2.png')" alt="图片" class="adv-img">
+    </el-carousel-item>
+    <el-carousel-item>
+      <img :src="getImg('3.png')" alt="图片" class="adv-img">
+    </el-carousel-item>
+  </el-carousel>
   <div class="bookctgys">
     <breadcrumbs></breadcrumbs>
     <thrdctgys></thrdctgys>
@@ -36,10 +44,13 @@ function ctrlShopCart(isShow: boolean) {
   width: 5.04rem;
   margin: 0.18rem;
   height: 1.62rem;
-  &-img {
-    width: 100%;
+  :deep(.el-carousel__container) {
     height: 100%;
-    border-radius: 0.1rem;
+    .adv-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 0.1rem;
+    }
   }
 }
 .bookctgys {
